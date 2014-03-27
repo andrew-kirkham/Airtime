@@ -23,12 +23,17 @@
         </activity>
         <activity
             android:name="air.time.airtime.Splash"
-            android:label="@string/title_activity_splash" 
+            android:label="@string/title_activity_splash"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
-		    <intent-filter>
-		            <action android:name="android.intent.action.MAIN" />
-		            <category android:name="android.intent.category.LAUNCHER" />
-		    </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="air.time.airtime.Favorites"
+            android:label="@string/title_activity_favorites" >
         </activity>
     </application>
 
