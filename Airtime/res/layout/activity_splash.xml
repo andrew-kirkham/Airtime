@@ -3,16 +3,16 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="air.time.airtime.Splash"
-    tools:ignore="MergeRootFrame" >
-
+    tools:context="air.time.airtime.Activities.Splash"
+    tools:ignore="MergeRootFrame">
         
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Airtime"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageView
+        android:id="@+id/SplashView"
+        android:layout_width="133dp"
+        android:layout_height="133dp"
+        android:layout_gravity="center"
+        android:contentDescription="Splash Screen of App"
+        android:src="@drawable/ic_launcher" />
 
 </FrameLayout>
 

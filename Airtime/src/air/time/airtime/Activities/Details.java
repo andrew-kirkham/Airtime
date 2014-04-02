@@ -1,7 +1,10 @@
-package air.time.airtime;
+package air.time.airtime.Activities;
 
+import air.time.airtime.R;
+import air.time.airtime.R.id;
+import air.time.airtime.R.layout;
+import air.time.airtime.R.menu;
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
-public class Favorites extends Activity {
+public class Details extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_favorites);
+		setContentView(R.layout.activity_details);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -28,7 +30,7 @@ public class Favorites extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.favorites, menu);
+		getMenuInflater().inflate(R.menu.details, menu);
 		return true;
 	}
 
@@ -55,7 +57,7 @@ public class Favorites extends Activity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.activity_favorites,
+			View rootView = inflater.inflate(R.layout.activity_details,
 					container, false);
 			return rootView;
 		}
