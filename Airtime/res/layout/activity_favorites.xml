@@ -1,50 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="air.time.airtime.Activities.Favorites"
-    tools:ignore="MergeRootFrame"
-    android:background="#FFFFFF" >
+    tools:context="com.airtime.Favorites"
+    tools:ignore="MergeRootFrame" />
 
-    <Button
-        android:id="@+id/showButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:text="Show" 
-        android:onClick="sortByShow"/>
-
-    <Button
-        android:id="@+id/airtimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/showButton"
-        android:layout_alignBottom="@+id/showButton"
-        android:layout_toRightOf="@+id/showButton"
-        android:text="Airtime"
-        android:onClick="sortByAirtime"/>
-
-    <Button
-        android:id="@+id/networkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/airtimeButton"
-        android:layout_alignBottom="@+id/airtimeButton"
-        android:layout_toRightOf="@+id/airtimeButton"
-        android:text="Network"
-        android:onClick="sortByNetwork" />
-
-    <Button
-        android:id="@+id/lastEpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/networkButton"
-        android:layout_alignBottom="@+id/networkButton"
-        android:layout_toRightOf="@+id/networkButton"
-        android:text="Last Ep"
-        android:onClick="sortByLastEp" />
-
-</RelativeLayout>
