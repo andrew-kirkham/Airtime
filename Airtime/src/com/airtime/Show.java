@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Show {
 	public String Name;
-	public Date Airtime;
+	public Date NextEpisode;
 	public Date LastEpisode;
 	public String Network;
 	
@@ -13,7 +13,7 @@ public class Show {
 		if (!(obj instanceof Show)) return false;
 		Show s = (Show)obj;
 		if (s.Name.equals(Name)) return false;
-		if (s.Airtime != Airtime) return false;
+		if (s.NextEpisode != NextEpisode) return false;
 		if (s.LastEpisode != LastEpisode) return false;
 		if (s.Network.equals(Network)) return false;
 		return true;
@@ -25,6 +25,6 @@ public class Show {
 	}
 	
 	public String toString(){
-		return String.format("{0}, {1}, {2}, {3}", Name, Airtime, LastEpisode, Network);
+		return String.format("{0}, {1}, {2}, {3}", Name, NextEpisode, LastEpisode, Network);
 	}
 }
