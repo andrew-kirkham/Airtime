@@ -52,6 +52,7 @@ public class Show {
 		if (s.NextEpisode != NextEpisode) return false;
 		if (s.LastEpisode != LastEpisode) return false;
 		if (!(s.Network.equals(Network))) return false;
+		if (s.Status != Status) return false;
 		return true;
 	}
 	@Override
