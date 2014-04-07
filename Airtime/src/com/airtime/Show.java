@@ -2,10 +2,27 @@ package com.airtime;
 
 import java.util.Date;
 
+/**
+ * A TV show that is currently running
+ * @author Andrew
+ *
+ */
 public class Show {
+	/**
+	 * Name of show
+	 */
 	public String Name;
+	/**
+	 * Next episode to air
+	 */
 	public Date NextEpisode;
+	/**
+	 * Last episode to air
+	 */
 	public Date LastEpisode;
+	/**
+	 * Network of the show
+	 */
 	public String Network;
 	
 	@Override

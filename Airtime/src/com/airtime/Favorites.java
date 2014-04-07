@@ -19,11 +19,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+ * The activity class for the favorites view
+ * @author Andrew
+ *
+ */
 public class Favorites extends Activity {
 
 	private ArrayList<Show> favorites;
-	public static final String FILENAME = "favorites";
 	private ArrayAdapter<Show> adapter;
+	public static final String FILENAME = "favorites";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +37,19 @@ public class Favorites extends Activity {
 		
 		favorites = new ArrayList<>();
 		addShow(new String[]{"Name", "Network", "2014-4-10", "2014-3-3"});
-		//loadFavorites();
+		addShowsToTable();
+		loadFavorites();
 	}
 
-	private void loadFavorites() {
+	
+	/**
+	 * Load the favorites from the filesystem and display them to the screen
+	 */
+	public void loadFavorites() {
 		try {
 			FileInputStream in = openFileInput(FILENAME);
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		    parseFeed(reader);
+		    parseStoredFavorites(reader);
 		    
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,7 +63,7 @@ public class Favorites extends Activity {
 		v.setAdapter(adapter);
 	}
 
-	private void parseFeed(BufferedReader reader) throws IOException {
+	private void parseStoredFavorites(BufferedReader reader) throws IOException {
 		String line = reader.readLine();
 		while (line != null){
 			String[] vals = line.split(",");
@@ -72,7 +82,11 @@ public class Favorites extends Activity {
 		favorites.add(s);
 	}
 
-	private void storeFavorite(Show favorite) {
+	/**
+	 * Store a favorite show to the filesystem
+	 * @param show object
+	 */
+	public void storeFavorite(Show favorite) {
 		FileOutputStream fos;
 		try {
 			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
@@ -99,15 +113,34 @@ public class Favorites extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Sorts favorites by show name
+	 * @param View
+	 */
 	public void sortByShow(View v){
 
 	}
+	
+	/**
+	 * Sorts favorites by airtime 
+	 * @param View
+	 */
 	public void sortByAirtime(View v){
 		
 	}
+	
+	/**
+	 * Sort favorites by network
+	 * @param View
+	 */
 	public void sortByNetwork(View v){
 		
 	}
+	
+	/**
+	 * Sort favorites by last episode 
+	 * @param View
+	 */
 	public void sortByLastEp(View v){
 		
 	}
