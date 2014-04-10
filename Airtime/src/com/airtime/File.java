@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class File {
 	
@@ -21,14 +23,7 @@ public class File {
 	 */
 	public File(Context context){
 		c = context;
-		java.io.File favorites = new java.io.File(FILENAME);
-		if (!favorites.exists()){
-			try {
-				favorites.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
 	}
 	
 	/**
@@ -61,9 +56,9 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0];
-		s.Network = vals[1];
-		s.NextEpisode = Date.valueOf(vals[2]);
-		s.LastEpisode = Date.valueOf(vals[3]);
+		s.LastEpisode = new Date(2014, 1, 2);
+		//s.NextEpisode = Date.valueOf(vals[2]);
+		s.Network = vals[3];
 		return s;
 	}
 	
@@ -74,11 +69,35 @@ public class File {
 	public void storeFavorite(Show favorite) {
 		FileOutputStream fos;
 		try {
-			fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos = c.openFileOutput(FILENAME, Context.MODE_APPEND);
 			fos.write(favorite.toString().getBytes());
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	/**
+	 * Clears the favorites file entirely. FOR TESTING ONLY
+	 */
+	public void clearFavorites(){
+		FileOutputStream fos;
+		try {
+			fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	public static Bitmap loadImage(Show s){
+		Bitmap myBitmap;
+		String filepath = String.format("%d.jpg", s.Id);
+		java.io.File imgFile = new java.io.File(filepath);
+		if(imgFile.exists()){
+		    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		}
+		else myBitmap = null; //should we make a default image?
+		return myBitmap;
 	}
 }

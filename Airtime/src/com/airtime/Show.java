@@ -44,6 +44,11 @@ public class Show {
 	 */
 	public Status Status;
 	
+	/**
+	 * The unique id of the TV show. Used by feed and to find images.
+	 */
+	public int Id;
+	
 	@Override
 	public boolean equals(Object obj){
 		if (!(obj instanceof Show)) return false;
@@ -70,6 +75,6 @@ public class Show {
 	}
 	
 	public String toString(){
-		return String.format("{0}, {1}, {2}, {3}", Name, NextEpisode, LastEpisode, Network);
+		return String.format("%s, %tD, %tD, %s\n", Name, NextEpisode, LastEpisode, Network);
 	}
 }

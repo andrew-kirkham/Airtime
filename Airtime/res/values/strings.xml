@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_favorites">Favorites</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="thumbnail_description">thumbnail for tv show</string>
+    <string name="arrow_description">arrow icon</string>
 
 </resources>
