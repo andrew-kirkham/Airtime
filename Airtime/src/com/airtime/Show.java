@@ -45,6 +45,11 @@ public class Show {
 	public Status Status;
 	
 	/**
+	 * Image url for selected show
+	 */
+	public String ImageUrl;
+	
+	/**
 	 * The unique id of the TV show. Used by feed and to find images.
 	 */
 	public int Id;
