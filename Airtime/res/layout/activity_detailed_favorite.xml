@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -7,17 +7,109 @@
     tools:ignore="MergeRootFrame" >
 
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvShowIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/sponge" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/TVshowTitle"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="TvShowName"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvShowIcon"
+        android:text="Tv Show Name Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30dp" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="18dp"
+        android:text="Status: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/LastAriedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lastAiredlabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lastAiredlabel"
+        android:layout_toRightOf="@+id/lastAiredlabel"
+        android:text="4/13/14 5:00pm"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/NextEpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NextEpLabel"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/NextEpLabel"
+        android:text="4/30/14 5:30pm"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/StatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/NextEpLabel"
+        android:layout_marginTop="23dp"
+        android:text="Status: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/StatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/StatusLabel"
+        android:layout_toRightOf="@+id/StatusLabel"
+        android:text="renewed"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/TVshowNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvShowIcon"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/tvShowIcon"
+        android:text="TBS"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/lastAiredlabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvShowIcon"
+        android:layout_marginTop="30dp"
+        android:text="Last Aired: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/NextEpLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_below="@+id/lastAiredlabel"
+        android:layout_marginTop="30dp"
+        android:text="Next Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+</RelativeLayout>
