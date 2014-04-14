@@ -4,16 +4,26 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * @author Bill
+ *
+ */
 public class XMLHandler extends DefaultHandler {
 
   String elementValue = null;
   Boolean elementOn = false;
   public static XMLGetSet data = null;
 
+  /**
+   * @return
+   */
   public static XMLGetSet getXMLData() {
       return data;
   }
 
+  /**
+   * @param data
+   */
   public static void setXMLData(XMLGetSet data) {
       XMLHandler.data = data;
   }
@@ -53,20 +63,20 @@ public class XMLHandler extends DefaultHandler {
       /** 
        * Sets the values after retrieving the values from the XML tags
        * */
-/*      if (localName.equalsIgnoreCase("title"))
-          data.setTitle(elementValue);
-      else if (localName.equalsIgnoreCase("artist"))
-          data.setArtist(elementValue);
-      else if (localName.equalsIgnoreCase("country"))
-          data.setCountry(elementValue);
-      else if (localName.equalsIgnoreCase("company"))
-          data.setCompany(elementValue);
-      else if (localName.equalsIgnoreCase("price"))
-          data.setPrice(elementValue);
-      else if (localName.equalsIgnoreCase("year"))
-          data.setYear(elementValue);
-          
-*/
+      
+      if (localName.equalsIgnoreCase("id"))
+          data.setID(Integer.parseInt(elementValue));
+      else if (localName.equalsIgnoreCase("SeriesName"))
+          data.setName(elementValue);
+      else if (localName.equalsIgnoreCase("Status"))
+          data.setStatus(elementValue);
+      else if (localName.equalsIgnoreCase("Network"))
+          data.setNetwork(elementValue);
+      else if (localName.equalsIgnoreCase("fanart"))
+          data.setImageURL(elementValue);
+      //
+      //TODO: set last episode and next episode
+      //
   }
 
   /** 
