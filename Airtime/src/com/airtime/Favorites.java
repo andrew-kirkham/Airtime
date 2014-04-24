@@ -11,7 +11,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * The activity class for the favorites view
@@ -19,7 +23,7 @@ import android.widget.ListView;
  *
  */
 public class Favorites extends Activity {
-
+	
 	private ArrayList<Show> favorites;
 	private ShowAdapter adapter;
 	
@@ -27,6 +31,8 @@ public class Favorites extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorites);
+		
+		ListView listView = (ListView) findViewById(R.id.listView);
 		
 		favorites = new ArrayList<Show>();
 		favorites = populateTestFavorites();
@@ -37,6 +43,17 @@ public class Favorites extends Activity {
 		}
 		favorites = f.loadFavorites();
 		addShowsToTable();
+		
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override 
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+				TextView textView = (TextView) view;
+	            String name = textView.getText().toString();
+	            //Sends to a toast message
+	            Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	private ArrayList<Show> populateTestFavorites(){
@@ -57,6 +74,8 @@ public class Favorites extends Activity {
 		adapter.notifyDataSetChanged();
 		v.setAdapter(adapter);
 	}
+
+
 	
 	/**
 	 * Sorts favorites by show name

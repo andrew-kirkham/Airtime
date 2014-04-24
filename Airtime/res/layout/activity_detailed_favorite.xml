@@ -24,17 +24,6 @@
         android:textSize="30dp" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="18dp"
-        android:text="Status: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30dp" />
-
-    <TextView
         android:id="@+id/LastAriedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,7 +94,6 @@
         android:id="@+id/NextEpLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView4"
         android:layout_below="@+id/lastAiredlabel"
         android:layout_marginTop="30dp"
         android:text="Next Ep: "
