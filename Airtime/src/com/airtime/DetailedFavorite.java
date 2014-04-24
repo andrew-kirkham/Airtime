@@ -29,6 +29,9 @@ public class DetailedFavorite extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detailed_favorite);
+		//recieve show passed on intent??
+		Bundle recdData = getIntent().getExtras();
+		String myVal = recdData.getString("my.package.dataToPass");
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
 		tvShowName.setText(favorite.Name);

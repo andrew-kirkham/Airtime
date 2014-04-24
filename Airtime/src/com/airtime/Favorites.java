@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import com.airtime.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -43,15 +44,24 @@ public class Favorites extends Activity {
 		}
 		favorites = f.loadFavorites();
 		addShowsToTable();
-		
+		//adapter = new ShowAdapter(this,  populateTestFavorites());
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-				TextView textView = (TextView) view;
-	            String name = textView.getText().toString();
+				Show show = (Show) adapter.getItem(position);
+				//TextView textView = (TextView) view;
+	            //String name = textView.getText().toString();
 	            //Sends to a toast message
-	            Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
+	           //Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
+	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
+	            intent.putExtra("Name", show.Name);
+	            intent.putExtra("Network", show.Network);
+	            intent.putExtra("last Aired", show.LastEpisode);
+	            intent.putExtra("Next Ep", show.NextEpisode);
+	            intent.putExtra("Status", show.Status);	   
+	            
+	            startActivity(intent);   
 			}
 		});
 	}
