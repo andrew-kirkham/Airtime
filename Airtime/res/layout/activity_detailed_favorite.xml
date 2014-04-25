@@ -30,17 +30,6 @@
         android:textSize="25dp" />
 
     <TextView
-        android:id="@+id/StatusLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/NextEpLabel"
-        android:layout_marginTop="23dp"
-        android:text="Status: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <TextView
         android:id="@+id/StatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,16 +37,6 @@
         android:layout_alignTop="@+id/StatusLabel"
         android:layout_toRightOf="@+id/StatusLabel"
         android:text="renewed"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <TextView
-        android:id="@+id/NextEpLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lastAiredlabel"
-        android:layout_marginTop="30dp"
-        android:text="Next Ep: "
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
 
@@ -83,25 +62,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
 
-    <ImageView
-        android:id="@+id/tvShowIcon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/TVshowTitle"
-        android:layout_toRightOf="@+id/StatusLabel"
-        android:src="@drawable/sponge" />
-    
-    <Button
-        android:id="@+id/favoritesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/StatusText"
-   	    android:background="@drawable/gradient"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"          
-        android:text="Add to Favorites"        
-         />
-
     <TextView
         android:id="@+id/TVshowNetwork"
         android:layout_width="wrap_content"
@@ -111,5 +71,42 @@
         android:text="TBS"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/NextEpLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lastAiredlabel"
+        android:text="Next Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/StatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/NextEpLabel"
+        android:text="Status: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/favoritesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StatusText"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/gradient_green"
+        android:text="Add to Favorites" />
+
+    <ImageView
+        android:id="@+id/tvShowIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/TVshowTitle"
+        android:src="@drawable/sponge" />
 
 </RelativeLayout>

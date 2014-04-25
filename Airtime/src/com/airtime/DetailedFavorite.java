@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.os.Build;
@@ -51,5 +52,14 @@ public class DetailedFavorite extends Activity {
 		TextView tvShowStatus = (TextView) findViewById(R.id.StatusText);
 		String status = recdData.getString("Status");
 		tvShowStatus.setText(status);	
-	}
+		
+		final Button button = (Button) findViewById(R.id.favoritesButton);
+	    button.setOnClickListener(new View.OnClickListener() {
+	        public void onClick(View v) {
+	            // Perform action on click
+	        	button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
+	        	button.setText("Remove from Favorites");
+	        }
+	    });
+	}	
 }
