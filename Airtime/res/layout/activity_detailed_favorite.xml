@@ -90,15 +90,17 @@
         android:layout_below="@+id/TVshowTitle"
         android:layout_toRightOf="@+id/StatusLabel"
         android:src="@drawable/sponge" />
-
+    
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/favoritesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/StatusText"
+   	    android:background="@drawable/gradient"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="Add to Favorites" />
+        android:layout_marginTop="15dp"          
+        android:text="Add to Favorites"        
+         />
 
     <TextView
         android:id="@+id/TVshowNetwork"
