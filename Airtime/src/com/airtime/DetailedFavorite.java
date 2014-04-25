@@ -29,7 +29,7 @@ public class DetailedFavorite extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detailed_favorite);
-		//recieve show passed on intent??
+		//recieve show passed on intent
 		Bundle recdData = getIntent().getExtras();
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
@@ -40,15 +40,16 @@ public class DetailedFavorite extends Activity {
 		String network = recdData.getString("Network");
 		tvShowNetwork.setText(network);
 		
-		TextView lastAired = (TextView) findViewById(R.id.LastAriedText);
-		//tvShowNetwork.setText(favorite.LastEpisode);;
+		TextView tvShowlastAired = (TextView) findViewById(R.id.LastAriedText);
+		String lastAired = recdData.getString("last Aired");
+		tvShowlastAired.setText(lastAired);
 		
-		TextView nextEp = (TextView) findViewById(R.id.NextEpText);
-		//tvShowNetwork.setText(favorite.NextEpisode);
+		TextView tvShowNextEp = (TextView) findViewById(R.id.NextEpText);
+		String nextEp = recdData.getString("Next Ep");
+		tvShowNextEp.setText(nextEp);
 		
-		TextView status = (TextView) findViewById(R.id.StatusText);
-		//tvShowNetwork.setText(favorite.Status);
-		
-		
+		TextView tvShowStatus = (TextView) findViewById(R.id.StatusText);
+		String status = recdData.getString("Status");
+		tvShowStatus.setText(status);	
 	}
 }
