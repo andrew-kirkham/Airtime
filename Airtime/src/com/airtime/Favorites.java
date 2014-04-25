@@ -14,6 +14,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,16 +45,12 @@ public class Favorites extends Activity {
 		}
 		favorites = f.loadFavorites();
 		addShowsToTable();
-		//adapter = new ShowAdapter(this,  populateTestFavorites());
+		adapter = new ShowAdapter(this,  populateTestFavorites());
 		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				Show show = (Show) adapter.getItem(position);
-				//TextView textView = (TextView) view;
-	            //String name = textView.getText().toString();
-	            //Sends to a toast message
-	           //Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Name", show.Name);
 	            intent.putExtra("Network", show.Network);

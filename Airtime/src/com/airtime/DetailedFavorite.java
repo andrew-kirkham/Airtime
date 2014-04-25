@@ -31,13 +31,14 @@ public class DetailedFavorite extends Activity {
 		setContentView(R.layout.activity_detailed_favorite);
 		//recieve show passed on intent??
 		Bundle recdData = getIntent().getExtras();
-		String myVal = recdData.getString("my.package.dataToPass");
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
-		tvShowName.setText(favorite.Name);
+		String name = recdData.getString("Name");
+		tvShowName.setText(name);
 		
 		TextView tvShowNetwork = (TextView) findViewById(R.id.TVshowNetwork);
-		tvShowNetwork.setText(favorite.Network);
+		String network = recdData.getString("Network");
+		tvShowNetwork.setText(network);
 		
 		TextView lastAired = (TextView) findViewById(R.id.LastAriedText);
 		//tvShowNetwork.setText(favorite.LastEpisode);;
