@@ -7,10 +7,13 @@ import java.util.GregorianCalendar;
 
 import com.airtime.R;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -33,6 +36,9 @@ public class Favorites extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorites);
+		
+		ActionBar bar = getActionBar();
+		bar.setIcon(R.drawable.logo_final);
 		
 		ListView listView = (ListView) findViewById(R.id.listView);
 		
@@ -62,6 +68,14 @@ public class Favorites extends Activity {
 			}
 		});
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.favorites_actions, menu);
+ 
+        return super.onCreateOptionsMenu(menu);
+    }
 	
 	private ArrayList<Show> populateTestFavorites(){
 		ArrayList<Show> shows = new ArrayList<Show>();

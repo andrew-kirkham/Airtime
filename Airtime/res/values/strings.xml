@@ -9,6 +9,6 @@
     <string name="thumbnail_description">thumbnail for tv show</string>
     <string name="arrow_description">arrow icon</string>
     <string name="title_activity_detailed_favorite">DetailedFavorite</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="action_search">search</string>
 
 </resources>

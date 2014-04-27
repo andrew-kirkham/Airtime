@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name="com.airtime.Favorites"
-            android:label="@string/title_activity_favorites" >
+            android:label="@string/title_activity_favorites"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
         </activity>
         <activity
             android:name="com.airtime.Settings"
