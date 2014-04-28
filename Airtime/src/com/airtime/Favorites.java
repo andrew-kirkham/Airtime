@@ -1,26 +1,20 @@
 package com.airtime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import com.airtime.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 /**
  * The activity class for the favorites view
@@ -38,9 +32,7 @@ public class Favorites extends Activity {
 		setContentView(R.layout.activity_favorites);
 		
 		ActionBar bar = getActionBar();
-		bar.setIcon(R.drawable.logo_final);
-		
-		ListView listView = (ListView) findViewById(R.id.listView);
+		bar.setIcon(R.drawable.logo_final_icon);
 		
 		favorites = new ArrayList<Show>();
 		favorites = populateTestFavorites();
@@ -51,6 +43,11 @@ public class Favorites extends Activity {
 		}
 		favorites = f.loadFavorites();
 		addShowsToTable();
+		setAdapter();
+	}
+	
+	private void setAdapter() {
+		ListView listView = (ListView) findViewById(R.id.listView);
 		adapter = new ShowAdapter(this,  populateTestFavorites());
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -68,11 +65,17 @@ public class Favorites extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.favorites_actions, menu);
+ 
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
  
         return super.onCreateOptionsMenu(menu);
     }
@@ -95,8 +98,6 @@ public class Favorites extends Activity {
 		adapter.notifyDataSetChanged();
 		v.setAdapter(adapter);
 	}
-
-
 	
 	/**
 	 * Sorts favorites by show name

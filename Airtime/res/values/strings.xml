@@ -10,5 +10,6 @@
     <string name="arrow_description">arrow icon</string>
     <string name="title_activity_detailed_favorite">DetailedFavorite</string>
     <string name="action_search">search</string>
+    <string name="search_hint">Search</string>
 
 </resources>
