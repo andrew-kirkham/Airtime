@@ -3,12 +3,15 @@ package com.airtime;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * A TV show that is currently running
  * @author Andrew
  */
 
-public class Show {
+public class Show implements Parcelable {
 	
 	/**
 	 * Name of show
@@ -69,7 +72,48 @@ public class Show {
 		return result;
 	}
 	
+	/**
+	 * Convert show object to string
+	 * Required for storing to a text file
+	 */
 	public String toString(){
 		return String.format(Locale.US, "%s, %d, %d, %s, %s\n", Name, NextEpisode.getTimeInMillis(), LastEpisode.getTimeInMillis(), Network, Status);
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Name);
+        dest.writeString(Network);
+        dest.writeString(Status);
+        dest.writeInt(Id);
+        dest.writeLong(NextEpisode.getTimeInMillis());
+        dest.writeLong(LastEpisode.getTimeInMillis());
+	}
+	
+	public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
+        public Show createFromParcel(Parcel in) {
+        	Show s = new Show();
+            s.Name = in.readString();
+            s.Network = in.readString();
+            s.Status = in.readString();
+            s.Id = in.readInt();
+            
+            Calendar c = Calendar.getInstance();
+            s.NextEpisode = (Calendar)c.clone();
+            s.NextEpisode.setTimeInMillis(in.readLong());
+            
+            s.LastEpisode = (Calendar)c.clone();
+            s.LastEpisode.setTimeInMillis(in.readLong());
+            return s;
+        }
+
+        public Show[] newArray(int size) {
+            return new Show[size];
+        }
+    };
 }
