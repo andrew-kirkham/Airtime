@@ -2,8 +2,13 @@ package com.airtime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
 import java.util.Locale;
+
+import com.airtime.Show.Status;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -27,6 +33,7 @@ public class Favorites extends Activity {
 	
 	private ArrayList<Show> favorites;
 	private ShowAdapter adapter;
+	String[] sortTypes = { "Next Airtime", "Last Airtime", "Name" };
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +50,50 @@ public class Favorites extends Activity {
 		for (Show s : favorites){
 			f.storeFavorite(s);
 		}
-		favorites = f.loadFavorites();
+		//favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
+		setActionBarDropDown();
+	}
+
+	private void setActionBarDropDown() {
+		ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sortTypes);
+
+	    /** Enabling dropdown list navigation for the action bar */
+	    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+	    /** Defining Navigation listener */
+	    ActionBar.OnNavigationListener navigationListener=new ActionBar.OnNavigationListener() {
+
+	        @Override
+	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+	            if (sortTypes[itemPosition].equals("Name")) {
+	                sortByName();
+	            }
+	            else if (sortTypes[itemPosition].equals("Next Airtime")) {
+	                sortByNextAirtime();
+	            }
+	            else if (sortTypes[itemPosition].equals("Last Airtime")) {
+	                sortByLastAirtime();
+	            }
+	            return false;
+	        }
+	    };
+
+	    // Setting dropdown items and item navigation listener for the actionbar 
+	    getActionBar().setListNavigationCallbacks(adapter, navigationListener);
 	}
 	
+	public Boolean isAFavorite(Show s){
+		if(favorites.contains(s)){
+			return true;
+		}
+		else return false;
+	}
+
 	private void setAdapter() {
 		ListView listView = (ListView) findViewById(R.id.listView);
-		adapter = new ShowAdapter(this,  populateTestFavorites());
+		adapter = new ShowAdapter(this,  favorites);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
@@ -64,18 +107,19 @@ public class Favorites extends Activity {
 	            }
 	            else {intent.putExtra("last Aired", "none");}
 	            intent.putExtra("Next Ep", createDateStrings(show.NextEpisode));
-	            intent.putExtra("Status", show.Status.toString());	   
+	            intent.putExtra("Status", show.Status.toString());
+	            intent.putExtra("isAFavortie", isAFavorite(show));
 	            
 	            startActivity(intent);   
 			}
 		});
 	}
 	
-	public String createDateStrings(Date date){
+	public String createDateStrings(Calendar date){
 		String stringDate;
 		SimpleDateFormat formatter = new SimpleDateFormat(
                 "EEE MMMM d \n hh:mm a", Locale.getDefault());
-		stringDate = formatter.format(date).toString();
+		stringDate = formatter.format(date.getTime()).toString();
 		return stringDate; 
 	}
 
@@ -97,11 +141,15 @@ public class Favorites extends Activity {
 		ArrayList<Show> shows = new ArrayList<Show>();
 		for (int i = 0; i < 20; i++){
 			Show s = new Show();
-			s.Name = String.format("Test show name #%d", i);
+			Random r = new Random();
+			s.Name = String.format("Test show name #%d", r.nextInt(100));
 			s.Network = "NBC";
-			s.NextEpisode = new Date(Date.UTC(2014, 2, i, i, i, 0));
-			s.LastEpisode = new Date(Date.UTC(2014, 2, i-1, i, i, 0));
-			s.Status = s.Status.Ended;
+			Calendar c = Calendar.getInstance();
+			c.set(2014, 2, i + 5);
+			s.NextEpisode = (Calendar)c.clone();
+			c.add(Calendar.DATE, -3);
+			s.LastEpisode = c;
+			s.Status = Status.Ended;
 			shows.add(s);
 		}
 		return shows;
@@ -116,32 +164,37 @@ public class Favorites extends Activity {
 	
 	/**
 	 * Sorts favorites by show name
-	 * @param View
 	 */
-	public void sortByShow(View v){
+	public void sortByName(){
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.Name.compareToIgnoreCase(s2.Name);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 	
 	/**
-	 * Sorts favorites by airtime 
-	 * @param View
+	 * Sorts favorites by next airtime 
 	 */
-	public void sortByAirtime(View v){
-		
-	}
-	
-	/**
-	 * Sort favorites by network
-	 * @param View
-	 */
-	public void sortByNetwork(View v){
-		
+	public void sortByNextAirtime(){
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.NextEpisode.compareTo(s2.NextEpisode);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 	
 	/**
 	 * Sort favorites by last episode 
-	 * @param View
 	 */
-	public void sortByLastEp(View v){
-		
+	public void sortByLastAirtime(){
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.LastEpisode.compareTo(s2.LastEpisode);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 }

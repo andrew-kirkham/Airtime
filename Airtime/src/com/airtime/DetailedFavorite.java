@@ -1,7 +1,10 @@
 package com.airtime;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.airtime.Show.Status;
 
@@ -57,34 +60,56 @@ public class DetailedFavorite extends Activity {
 		tvShowStatus.setText(status);
 		
 		
+	
+		//Add Status later!!!!!!!!!!!!!!!!
+		reconstructShow(name, network, lastAired, nextEp);
 		
 		final Button button = (Button) findViewById(R.id.favoritesButton);
+		final Boolean isAFavorite = recdData.getBoolean("isAFavortie");
+		setButton(button , isAFavorite, false);
 	    button.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
-	        	changeButtonState(button, name);
+	        	setButton(button, !isAFavorite, true);
 	        }
 	    });
 	}
 	
-	public void reconstructShow(String name, String network, Date lastEp, Date nextEp, Status status){
+	public void reconstructShow(String name, String network, String lastEp, String nextEp){
+		SimpleDateFormat formatter = new SimpleDateFormat();
+		Calendar lastCalendar = Calendar.getInstance();
+		Calendar nextCalendar = (Calendar) lastCalendar.clone();
+		Date last, next;
+		try {
+			next = (Date) formatter.parse(nextEp);
+			last = (Date) formatter.parse(lastEp);
+			lastCalendar.setTime(last);
+			nextCalendar.setTime(next);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}		
 		favorite.Name = name;
-		favorite.Network = network;
-		favorite.LastEpisode = lastEp;
-		favorite.NextEpisode = nextEp;
-		favorite.Status = status;
+		favorite.Network = network;		
+		favorite.LastEpisode = lastCalendar;
+		favorite.NextEpisode = nextCalendar;
+		//favorite.Status = status;
 	}
 	
-	public void changeButtonState(Button button, String favoriteName){
+	public void setButton(Button button, Boolean fav, Boolean click){
 		File f = new File(this);
-		if(button.getText().equals("Add To Favorites") ){
+		//if(button.getText().equals("Add To Favorites") ){
+		if(fav){
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
-        	f.storeFavorite(favorite);
+        	if(click){
+        		f.storeFavorite(favorite);
+        	}
 		}
 		else{
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_green));
         	button.setText("Add To Favorites");
-        	f.removeLineFromFile(favoriteName);
+        	if(click){
+        		f.removeLineFromFile(favorite.Name);
+        	}
 		}	
 	}
 }

@@ -20,7 +20,7 @@ public class SearchResults extends Activity {
         handleIntent(getIntent());
 	}
 	 
-	    @Override
+    @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);

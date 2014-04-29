@@ -15,7 +15,7 @@ public class XMLHandler extends DefaultHandler {
   public static XMLGetSet data = null;
 
   /**
-   * @return
+   * @return XMLGetSet
    */
   public static XMLGetSet getXMLData() {
       return data;
@@ -27,6 +27,7 @@ public class XMLHandler extends DefaultHandler {
   public static void setXMLData(XMLGetSet data) {
       XMLHandler.data = data;
   }
+  
   /** 
    * This will be called when the tags of the XML starts.
    **/
@@ -36,18 +37,11 @@ public class XMLHandler extends DefaultHandler {
 
       elementOn = true;
 
-      if (localName.equals("CATALOG"))
+      if (localName.equals("Data"))
       {
           data = new XMLGetSet();
-      } else if (localName.equals("CD")) {
-          /** 
-           * We can get the values of attributes for eg. if the CD tag had an attribute( <CD attr= "band">Akon</CD> ) 
-           * we can get the value "band". Below is an example of how to achieve this.
-           * 
-           * String attributeValue = attributes.getValue("attr");
-           * data.setAttribute(attributeValue);
-           * 
-           * */
+      } else if (localName.equals("Series")) {
+        
       }
   }
 
@@ -74,6 +68,8 @@ public class XMLHandler extends DefaultHandler {
           data.setNetwork(elementValue);
       else if (localName.equalsIgnoreCase("fanart"))
           data.setImageURL(elementValue);
+      
+      
       //
       //TODO: set last episode and next episode
       //

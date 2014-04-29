@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -60,7 +61,7 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0];
-		s.LastEpisode = new Date(2014, 1, 2);
+		s.LastEpisode = Calendar.getInstance();
 		//s.NextEpisode = Date.valueOf(vals[2]);
 		s.Network = vals[3];
 		return s;
@@ -81,6 +82,7 @@ public class File {
 		} 
 	}
 	
+	//should be converted to take show object later once it is properly reconstructed in detailed favs
 	public void removeLineFromFile(String lineToRemove) {
 		try {
 			java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
@@ -120,7 +122,7 @@ public class File {
 	}
 	
 	//used to check if show is already favorite and set the button state
-	public Boolean ParseFavorite(String favoriteName){
+	/*public Boolean ParseFavorite(String favoriteName){
 		try {
 			FileInputStream in = c.openFileInput(FILENAME);
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -137,7 +139,7 @@ public class File {
 			e.printStackTrace();
 		} 
 		return false;
-	}
+	}*/
 	
 	/**
 	 * Clears the favorites file entirely. FOR TESTING ONLY
