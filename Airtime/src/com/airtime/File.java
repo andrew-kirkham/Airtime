@@ -126,27 +126,7 @@ public class File {
 			e.printStackTrace();
 		}
 	}
-	
-	//used to check if show is already favorite and set the button state
-	/*public Boolean ParseFavorite(String favoriteName){
-		try {
-			FileInputStream in = c.openFileInput(FILENAME);
-		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		    String line = reader.readLine();
-			while (line != null){
-				String[] vals = line.split(",");
-				if(vals[0].equals(favoriteName))
-					return true;
-			}
-			return false;		    
-		} 
 		
-		catch (IOException e) {
-			e.printStackTrace();
-		} 
-		return false;
-	}*/
-	
 	/**
 	 * Clears the favorites file entirely. FOR TESTING ONLY
 	 */

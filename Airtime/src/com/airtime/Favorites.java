@@ -112,6 +112,11 @@ public class Favorites extends Activity {
 		});
 	}
 	
+	public void removeFromFavoritesList(Show s){
+		favorites.remove(s);
+		adapter.notifyDataSetChanged();
+	}
+	
 	public String createDateStrings(Calendar date){
 		String stringDate;
 		SimpleDateFormat formatter = new SimpleDateFormat(

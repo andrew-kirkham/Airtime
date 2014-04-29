@@ -1,8 +1,12 @@
 package com.airtime;
 
-import com.airtime.Show.Status;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import android.app.Activity;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +52,7 @@ public class DetailedFavorite extends Activity {
 		
 	
 		//Add Status later!!!!!!!!!!!!!!!!
-		reconstructShow(name, network, lastAired, nextEp);
+		reconstructShow(name, network, lastAired, nextEp, status);
 		
 		final Button button = (Button) findViewById(R.id.favoritesButton);
 		final Boolean isAFavorite = recdData.getBoolean("isAFavortie");
@@ -60,34 +64,36 @@ public class DetailedFavorite extends Activity {
 	    });
 	}
 	
-	public void reconstructShow(String name, String network, String lastEp, String nextEp){
+	public void reconstructShow(String name, String network, String lastEp, String nextEp, String status) {
 		SimpleDateFormat formatter = new SimpleDateFormat();
 		Calendar lastCalendar = Calendar.getInstance();
 		Calendar nextCalendar = (Calendar) lastCalendar.clone();
 		Date last, next;
-		try {
-			next = (Date) formatter.parse(nextEp);
-			last = (Date) formatter.parse(lastEp);
-			lastCalendar.setTime(last);
-			nextCalendar.setTime(next);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}		
+			try {
+				next = (Date) formatter.parse(nextEp);
+				last = (Date) formatter.parse(lastEp);
+				lastCalendar.setTime(last);
+				nextCalendar.setTime(next);
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+			}			
 		favorite.Name = name;
 		favorite.Network = network;		
 		favorite.LastEpisode = lastCalendar;
 		favorite.NextEpisode = nextCalendar;
-		//favorite.Status = status;
+		favorite.Status = status;
 	}
 	
 	public void setButton(Button button, Boolean fav, Boolean click){
 		File f = new File(this);
+		Favorites list = new Favorites();
 		//if(button.getText().equals("Add To Favorites") ){
 		if(fav){
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
         	if(click){
         		f.storeFavorite(favorite);
+        		list.removeFromFavoritesList(favorite);
         	}
 		}
 		else{
