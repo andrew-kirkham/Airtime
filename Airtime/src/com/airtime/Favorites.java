@@ -5,27 +5,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Random;
 import java.util.Locale;
 
+import com.airtime.Show.Status;
+
 import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 /**
  * The activity class for the favorites view
@@ -110,13 +107,13 @@ public class Favorites extends Activity {
 		});
 	}
 	
-	public String createDateStrings(Date date){
+	public String createDateStrings(Calendar date){
 		String stringDate;// = date.toString();
 		SimpleDateFormat formatter = new SimpleDateFormat(
                 "EEE MMMM d \n hh:mm a", Locale.getDefault());
 		//stringDate = stringDate.substring(0, stringDate.lastIndexOf('G'));
 		//stringDate = stringDate.substring(0, stringDate.lastIndexOf(':'));
-		stringDate = formatter.format(date).toString();
+		stringDate = formatter.format(date.getTime()).toString();
 		return stringDate; 
 	}
 
@@ -141,9 +138,12 @@ public class Favorites extends Activity {
 			Random r = new Random();
 			s.Name = String.format("Test show name #%d", r.nextInt(100));
 			s.Network = "NBC";
-			s.NextEpisode = new Date(Date.UTC(2014, 2, i, i, i, 0));
-			s.LastEpisode = new Date(Date.UTC(2014, 2, i-1, i, i, 0));
-			s.Status = s.Status.Ended;
+			Calendar c = Calendar.getInstance();
+			c.set(2014, 2, i + 5);
+			s.NextEpisode = (Calendar)c.clone();
+			c.add(Calendar.DATE, -3);
+			s.LastEpisode = c;
+			s.Status = Status.Ended;
 			shows.add(s);
 		}
 		return shows;

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -56,7 +57,7 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0];
-		s.LastEpisode = new Date(2014, 1, 2);
+		s.LastEpisode = Calendar.getInstance();
 		//s.NextEpisode = Date.valueOf(vals[2]);
 		s.Network = vals[3];
 		return s;
