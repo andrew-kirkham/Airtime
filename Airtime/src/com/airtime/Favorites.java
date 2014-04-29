@@ -111,8 +111,6 @@ public class Favorites extends Activity {
 		String stringDate;// = date.toString();
 		SimpleDateFormat formatter = new SimpleDateFormat(
                 "EEE MMMM d \n hh:mm a", Locale.getDefault());
-		//stringDate = stringDate.substring(0, stringDate.lastIndexOf('G'));
-		//stringDate = stringDate.substring(0, stringDate.lastIndexOf(':'));
 		stringDate = formatter.format(date.getTime()).toString();
 		return stringDate; 
 	}

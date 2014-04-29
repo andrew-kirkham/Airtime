@@ -5,9 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +17,7 @@ public class File {
 	
 	private Context c;
 	private static final String FILENAME = "favorites";
+	private java.io.File favorites;
 	
 	/**
 	 * Constructor for File. Creates a new favorites file if one does not exist
@@ -24,7 +25,7 @@ public class File {
 	 */
 	public File(Context context){
 		c = context;
-		java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
+		favorites = new java.io.File(c.getFilesDir(), FILENAME);
 	}
 	
 	/**
@@ -93,7 +94,7 @@ public class File {
 	
 	public static Bitmap loadImage(Show s){
 		Bitmap myBitmap;
-		String filepath = String.format("%d.jpg", s.Id);
+		String filepath = String.format(Locale.US,"%d.jpg", s.Id);
 		java.io.File imgFile = new java.io.File(filepath);
 		if(imgFile.exists()){
 		    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());

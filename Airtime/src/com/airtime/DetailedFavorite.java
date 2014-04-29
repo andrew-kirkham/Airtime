@@ -1,20 +1,10 @@
 package com.airtime;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.os.Build;
 
 /**
  * The activity class for the detailed favorites view
@@ -30,7 +20,7 @@ public class DetailedFavorite extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detailed_favorite);
-		//recieve show passed on intent
+		//receive show passed on intent
 		Bundle recdData = getIntent().getExtras();
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
