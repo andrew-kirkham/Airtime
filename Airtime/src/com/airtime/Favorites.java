@@ -1,7 +1,11 @@
 package com.airtime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Random;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -47,7 +51,7 @@ public class Favorites extends Activity {
 		for (Show s : favorites){
 			f.storeFavorite(s);
 		}
-		favorites = f.loadFavorites();
+		//favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
 		setActionBarDropDown();
@@ -83,7 +87,7 @@ public class Favorites extends Activity {
 
 	private void setAdapter() {
 		ListView listView = (ListView) findViewById(R.id.listView);
-		adapter = new ShowAdapter(this,  populateTestFavorites());
+		adapter = new ShowAdapter(this,  favorites);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
@@ -119,7 +123,8 @@ public class Favorites extends Activity {
 		ArrayList<Show> shows = new ArrayList<Show>();
 		for (int i = 0; i < 20; i++){
 			Show s = new Show();
-			s.Name = String.format("Test show name #%d", i);
+			Random r = new Random();
+			s.Name = String.format("Test show name #%d", r.nextInt(100));
 			s.Network = "NBC";
 			s.NextEpisode = new Date(Date.UTC(2014, 2, i, i, i, 0));
 			shows.add(s);
@@ -138,20 +143,35 @@ public class Favorites extends Activity {
 	 * Sorts favorites by show name
 	 */
 	public void sortByName(){
-        Toast.makeText(this, "sort by name", Toast.LENGTH_SHORT).show();
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.Name.compareToIgnoreCase(s2.Name);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 	
 	/**
 	 * Sorts favorites by next airtime 
 	 */
 	public void sortByNextAirtime(){
-        Toast.makeText(this, "sort by next time", Toast.LENGTH_SHORT).show();
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.NextEpisode.compareTo(s2.NextEpisode);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 	
 	/**
 	 * Sort favorites by last episode 
 	 */
 	public void sortByLastAirtime(){
-        Toast.makeText(this, "sort by last time", Toast.LENGTH_SHORT).show();
+		Collections.sort(favorites, new Comparator<Show>(){
+		    public int compare(Show s1, Show s2) {
+		        return s1.LastEpisode.compareTo(s2.LastEpisode);
+		    }
+		});
+		adapter.notifyDataSetChanged();
 	}
 }
