@@ -1,27 +1,15 @@
 package com.airtime;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A TV show that is currently running
  * @author Andrew
- *
  */
+
 public class Show {
 	
-	/**
-	 * A status of the TV show
-	 * Continuing - currently airing
-	 * Returning - not currently airing but coming back
-	 * Ended - ended or canceled and not coming back
-	 * @author REDBULL
-	 *
-	 */
-	public enum Status{
-		Continuing, 
-		Returning, 
-		Ended
-	};
 	/**
 	 * Name of show
 	 */
@@ -42,7 +30,7 @@ public class Show {
 	/**
 	 * The current airing status of the TV show
 	 */
-	public Status Status;
+	public String Status;
 	
 	/**
 	 * Image url for selected show
@@ -66,6 +54,7 @@ public class Show {
 		if (s.Id != Id) return false;
 		return true;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,6 +70,6 @@ public class Show {
 	}
 	
 	public String toString(){
-		return String.format("%s, %tD, %tD, %s\n", Name, NextEpisode, LastEpisode, Network);
+		return String.format(Locale.US, "%s, %d, %d, %s, %s\n", Name, NextEpisode.getTimeInMillis(), LastEpisode.getTimeInMillis(), Network, Status);
 	}
 }

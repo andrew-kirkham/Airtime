@@ -8,8 +8,6 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.Locale;
 
-import com.airtime.Show.Status;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -50,7 +48,7 @@ public class Favorites extends Activity {
 		for (Show s : favorites){
 			f.storeFavorite(s);
 		}
-		//favorites = f.loadFavorites();
+		favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
 		setActionBarDropDown();
@@ -79,8 +77,7 @@ public class Favorites extends Activity {
 	            return false;
 	        }
 	    };
-
-	    // Setting dropdown items and item navigation listener for the actionbar 
+ 
 	    getActionBar().setListNavigationCallbacks(adapter, navigationListener);
 	}
 	

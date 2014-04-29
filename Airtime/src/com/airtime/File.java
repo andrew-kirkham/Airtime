@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ public class File {
 	
 	private Context c;
 	private static final String FILENAME = "favorites";
+	private java.io.File favorites;
 	
 	/**
 	 * Constructor for File. Creates a new favorites file if one does not exist
@@ -28,7 +30,7 @@ public class File {
 	 */
 	public File(Context context){
 		c = context;
-		java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
+		favorites = new java.io.File(c.getFilesDir(), FILENAME);
 	}
 	
 	/**
@@ -61,9 +63,13 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0];
-		s.LastEpisode = Calendar.getInstance();
-		//s.NextEpisode = Date.valueOf(vals[2]);
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(Long.parseLong(vals[1].trim()));
+		s.LastEpisode = (Calendar)c.clone();
+		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
+		s.NextEpisode = (Calendar)c.clone();
 		s.Network = vals[3];
+		s.Status = vals[4];
 		return s;
 	}
 	
@@ -156,7 +162,7 @@ public class File {
 	
 	public static Bitmap loadImage(Show s){
 		Bitmap myBitmap;
-		String filepath = String.format("%d.jpg", s.Id);
+		String filepath = String.format(Locale.US,"%d.jpg", s.Id);
 		java.io.File imgFile = new java.io.File(filepath);
 		if(imgFile.exists()){
 		    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
