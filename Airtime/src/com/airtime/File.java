@@ -27,9 +27,10 @@ public class File {
 		c = context;
 		favorites = new java.io.File(c.getFilesDir(), FILENAME);
 	}
-	
+
 	/**
-	 * Load the favorites from the filesystem and display them to the screen
+	 * Load the favorite TV shows from filesystem
+	 * @return An ArrayList of all stored shows
 	 */
 	public ArrayList<Show> loadFavorites() {
 		ArrayList<Show> shows = new ArrayList<Show>();
@@ -70,7 +71,7 @@ public class File {
 	
 	/**
 	 * Store a favorite show to the filesystem
-	 * @param show object
+	 * @param The show to store
 	 */
 	public void storeFavorite(Show favorite) {
 		FileOutputStream fos;
@@ -96,6 +97,11 @@ public class File {
 		} 
 	}
 	
+	/**
+	 * Load the image file from the filesystem
+	 * @param The Show for which image to load
+	 * @return a Bitmap image
+	 */
 	public static Bitmap loadImage(Show s){
 		Bitmap myBitmap;
 		String filepath = String.format(Locale.US,"%d.jpg", s.Id);
