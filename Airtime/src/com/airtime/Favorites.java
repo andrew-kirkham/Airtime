@@ -1,11 +1,13 @@
 package com.airtime;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Random;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -96,13 +98,26 @@ public class Favorites extends Activity {
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Name", show.Name);
 	            intent.putExtra("Network", show.Network);
-	            intent.putExtra("last Aired", show.LastEpisode);
-	            intent.putExtra("Next Ep", show.NextEpisode);
-	            intent.putExtra("Status", show.Status);	   
+	            if (show.LastEpisode != null){
+	            	intent.putExtra("last Aired", createDateStrings(show.LastEpisode));
+	            }
+	            else {intent.putExtra("last Aired", "none");}
+	            intent.putExtra("Next Ep", createDateStrings(show.NextEpisode));
+	            intent.putExtra("Status", show.Status.toString());	   
 	            
 	            startActivity(intent);   
 			}
 		});
+	}
+	
+	public String createDateStrings(Date date){
+		String stringDate;// = date.toString();
+		SimpleDateFormat formatter = new SimpleDateFormat(
+                "EEE MMMM d \n hh:mm a", Locale.getDefault());
+		//stringDate = stringDate.substring(0, stringDate.lastIndexOf('G'));
+		//stringDate = stringDate.substring(0, stringDate.lastIndexOf(':'));
+		stringDate = formatter.format(date).toString();
+		return stringDate; 
 	}
 
 	@Override
@@ -127,6 +142,8 @@ public class Favorites extends Activity {
 			s.Name = String.format("Test show name #%d", r.nextInt(100));
 			s.Network = "NBC";
 			s.NextEpisode = new Date(Date.UTC(2014, 2, i, i, i, 0));
+			s.LastEpisode = new Date(Date.UTC(2014, 2, i-1, i, i, 0));
+			s.Status = s.Status.Ended;
 			shows.add(s);
 		}
 		return shows;
