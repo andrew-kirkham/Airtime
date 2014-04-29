@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 /**
  * The activity class for the favorites view
@@ -25,6 +30,7 @@ public class Favorites extends Activity {
 	
 	private ArrayList<Show> favorites;
 	private ShowAdapter adapter;
+	String[] sortTypes = { "Next Airtime", "Last Airtime", "Name" };
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +50,37 @@ public class Favorites extends Activity {
 		favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
+		setActionBarDropDown();
 	}
-	
+
+	private void setActionBarDropDown() {
+		ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sortTypes);
+
+	    /** Enabling dropdown list navigation for the action bar */
+	    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+	    /** Defining Navigation listener */
+	    ActionBar.OnNavigationListener navigationListener=new ActionBar.OnNavigationListener() {
+
+	        @Override
+	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+	            if (sortTypes[itemPosition].equals("Name")) {
+	                sortByName();
+	            }
+	            else if (sortTypes[itemPosition].equals("Next Airtime")) {
+	                sortByNextAirtime();
+	            }
+	            else if (sortTypes[itemPosition].equals("Last Airtime")) {
+	                sortByLastAirtime();
+	            }
+	            return false;
+	        }
+	    };
+
+	    // Setting dropdown items and item navigation listener for the actionbar 
+	    getActionBar().setListNavigationCallbacks(adapter, navigationListener);
+	}
+
 	private void setAdapter() {
 		ListView listView = (ListView) findViewById(R.id.listView);
 		adapter = new ShowAdapter(this,  populateTestFavorites());
@@ -101,32 +136,22 @@ public class Favorites extends Activity {
 	
 	/**
 	 * Sorts favorites by show name
-	 * @param View
 	 */
-	public void sortByShow(View v){
+	public void sortByName(){
+        Toast.makeText(this, "sort by name", Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
-	 * Sorts favorites by airtime 
-	 * @param View
+	 * Sorts favorites by next airtime 
 	 */
-	public void sortByAirtime(View v){
-		
-	}
-	
-	/**
-	 * Sort favorites by network
-	 * @param View
-	 */
-	public void sortByNetwork(View v){
-		
+	public void sortByNextAirtime(){
+        Toast.makeText(this, "sort by next time", Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
 	 * Sort favorites by last episode 
-	 * @param View
 	 */
-	public void sortByLastEp(View v){
-		
+	public void sortByLastAirtime(){
+        Toast.makeText(this, "sort by last time", Toast.LENGTH_SHORT).show();
 	}
 }

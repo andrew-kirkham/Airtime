@@ -13,5 +13,8 @@
     <string name="search_hint">Search</string>
     <string name="title_activity_search_results">SearchResults</string>
     <string name="hello_world">Hello world!</string>
+    <string name="sort_name">Sort By name</string>
+    <string name="sort_next_time">Sort By Airtime</string>
+    <string name="sort_last_time">Sort By Last Airtime</string>
 
 </resources>

@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
     <!-- Search / will display always -->
     <item android:id="@+id/action_search"
           android:icon="@drawable/ic_action_search"
-          android:title="search"
-          android:showAsAction="always"
+          android:title="@string/action_search"
+          android:showAsAction="ifRoom"
           android:actionViewClass="android.widget.SearchView"/>
-        
+    <!-- Sort by Name -->
+    <item android:id="@+id/action_sort_name"
+          android:icon="@drawable/arrow"
+          android:title="@string/sort_name"
+          android:showAsAction="never" />
+     
+    <!-- Sort by Next Airtime -->
+    <item android:id="@+id/action_sort_next_time"
+          android:icon="@drawable/arrow"
+          android:title="@string/sort_next_time"
+          android:showAsAction="never" />
+     
+    <!-- Sort by Last Airtime -->
+    <item android:id="@+id/action_sort_last_time"
+          android:icon="@drawable/arrow"
+          android:title="@string/sort_last_time"
+          android:showAsAction="never" />
 </menu>
