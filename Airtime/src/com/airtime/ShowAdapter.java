@@ -3,6 +3,7 @@ package com.airtime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -56,7 +57,7 @@ public class ShowAdapter extends BaseAdapter {
         Show s = data.get(position);
  
         title.setText(s.Name);
-        DateFormat date = new SimpleDateFormat("MM/dd HH:mm");
+        DateFormat date = new SimpleDateFormat("MM/dd HH:mm", Locale.US);
         airtime.setText(String.format("%s on %s", date.format(s.NextEpisode.getTime()), s.Network));
         
         Bitmap image = File.loadImage(s);

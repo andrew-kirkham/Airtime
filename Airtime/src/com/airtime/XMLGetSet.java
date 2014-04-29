@@ -1,7 +1,5 @@
 package com.airtime;
 
-import com.airtime.Show.Status;
-
 /**
  * Get and Set values for TV shows using thetvdb.com
  * @author Bill
@@ -55,18 +53,10 @@ public class XMLGetSet {
    * @param status
    */
   public void setStatus(String status) {
-    if(status == Status.Continuing.toString()) {
-      s.Status = Status.Continuing;
-    }
-    else if(status == Status.Returning.toString()) {
-      s.Status = Status.Returning;
-    }
-    else if(status == Status.Ended.toString()) {
-      s.Status = Status.Ended;
-    }
+    s.Status = status;
   }
   
-  public Status getStatus() {
+  public String getStatus() {
     return s.Status;
   }
   
