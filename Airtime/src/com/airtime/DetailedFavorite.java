@@ -1,5 +1,6 @@
 package com.airtime;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 
 public class DetailedFavorite extends Activity {
 
-	Show favorite = new Show();
+	//Show favorite = new Show();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,8 @@ public class DetailedFavorite extends Activity {
 		//receive show passed on intent
 		Bundle recdData = getIntent().getExtras();
 		
-		Show s = recdData.getParcelable("Show");
+		final Show s = recdData.getParcelable("Show");
+		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
 		tvShowName.setText(s.Name);
 		
@@ -45,41 +47,17 @@ public class DetailedFavorite extends Activity {
 		tvShowStatus.setText(s.Status);	
 		
 		
-	
-		//Add Status later!!!!!!!!!!!!!!!!
-		reconstructShow(name, network, lastAired, nextEp, status);
-		
 		final Button button = (Button) findViewById(R.id.favoritesButton);
-		final Boolean isAFavorite = recdData.getBoolean("isAFavortie");
-		setButton(button , isAFavorite, false);
+		final Boolean isAFavorite = recdData.getBoolean("isAFavorite");
+		setButton(button , isAFavorite, false, s);
 	    button.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
-	        	setButton(button, !isAFavorite, true);
+	        	setButton(button, !isAFavorite, true, s);
 	        }
 	    });
 	}
 	
-	public void reconstructShow(String name, String network, String lastEp, String nextEp, String status) {
-		SimpleDateFormat formatter = new SimpleDateFormat();
-		Calendar lastCalendar = Calendar.getInstance();
-		Calendar nextCalendar = (Calendar) lastCalendar.clone();
-		Date last, next;
-			try {
-				next = (Date) formatter.parse(nextEp);
-				last = (Date) formatter.parse(lastEp);
-				lastCalendar.setTime(last);
-				nextCalendar.setTime(next);
-			} catch (java.text.ParseException e) {
-				e.printStackTrace();
-			}			
-		favorite.Name = name;
-		favorite.Network = network;		
-		favorite.LastEpisode = lastCalendar;
-		favorite.NextEpisode = nextCalendar;
-		favorite.Status = status;
-	}
-	
-	public void setButton(Button button, Boolean fav, Boolean click){
+	public void setButton(Button button, Boolean fav, Boolean click, Show s){
 		File f = new File(this);
 		Favorites list = new Favorites();
 		//if(button.getText().equals("Add To Favorites") ){
@@ -87,15 +65,15 @@ public class DetailedFavorite extends Activity {
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
         	if(click){
-        		f.storeFavorite(favorite);
-        		list.removeFromFavoritesList(favorite);
+        		//f.storeFavorite(s);
         	}
 		}
 		else{
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_green));
         	button.setText("Add To Favorites");
-        	if(click){
-        		f.removeLineFromFile(favorite.Name);
+        	if(click){       	
+        		//f.removeLineFromFile(favorite.Name);
+        		//list.removeFromFavoritesList(s);
         	}
 		}	
 	}

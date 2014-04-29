@@ -1,9 +1,11 @@
 package com.airtime;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.Random;
 
 import android.app.ActionBar;
@@ -89,7 +91,15 @@ public class Favorites extends Activity {
 		}
 		else return false;
 	}
-
+	
+	public void removeFromFavoritesList(Show s){
+		if(favorites.contains(s)){
+			favorites.remove(s);
+		}
+		
+		adapter.notifyDataSetChanged();
+	}
+	
 	private void setAdapter() {
 		ListView listView = (ListView) findViewById(R.id.listView);
 		adapter = new ShowAdapter(this,  favorites);
@@ -100,14 +110,10 @@ public class Favorites extends Activity {
 				Show show = (Show) adapter.getItem(position);
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Show", show);
+	            intent.putExtra("isAFavorite", isAFavorite(show));
 	            startActivity(intent);   
 			}
 		});
-	}
-	
-	public void removeFromFavoritesList(Show s){
-		favorites.remove(s);
-		adapter.notifyDataSetChanged();
 	}
 	
 	public String createDateStrings(Calendar date){
