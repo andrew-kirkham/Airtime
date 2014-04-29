@@ -1,6 +1,6 @@
 package com.airtime;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * A TV show that is currently running
@@ -29,11 +29,11 @@ public class Show {
 	/**
 	 * Next episode to air
 	 */
-	public Date NextEpisode;
+	public Calendar NextEpisode;
 	/**
 	 * Last episode to air
 	 */
-	public Date LastEpisode;
+	public Calendar LastEpisode;
 	/**
 	 * Network of the show
 	 */

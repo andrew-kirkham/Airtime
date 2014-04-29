@@ -57,7 +57,7 @@ public class ShowAdapter extends BaseAdapter {
  
         title.setText(s.Name);
         DateFormat date = new SimpleDateFormat("MM/dd HH:mm");
-        airtime.setText(String.format("%s on %s", date.format(s.NextEpisode), s.Network));
+        airtime.setText(String.format("%s on %s", date.format(s.NextEpisode.getTime()), s.Network));
         
         Bitmap image = File.loadImage(s);
         ImageView myImage = (ImageView) vi.findViewById(R.id.list_image);
