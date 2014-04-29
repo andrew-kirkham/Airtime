@@ -11,13 +11,17 @@ public class XMLGetSet {
   
   public Show s;
   
-  private String IMAGE_URL = "http://www.thetvdb.com/banners/";
+  private static final String IMAGE_URL = "http://www.thetvdb.com/banners/";
   
   /**
    * XMLGetSet constructor
    */
   public XMLGetSet() {
     s = new Show();
+  }
+  
+  public Show getShow() {
+    return s;
   }
   
   /**
@@ -28,6 +32,10 @@ public class XMLGetSet {
     s.Name = showName;
   }
   
+  public String getName() {
+    return s.Name;
+  }
+  
   /**
    * Set show Id.
    * Used for grabbing more information from thetvdb.com
@@ -36,6 +44,10 @@ public class XMLGetSet {
    */
   public void setID(int id) {
     s.Id = id;
+  }
+  
+  public int getID() {
+    return s.Id;
   }
   
   /**
@@ -54,12 +66,20 @@ public class XMLGetSet {
     }
   }
   
+  public Status getStatus() {
+    return s.Status;
+  }
+  
   /**
    * set airing network for the show
    * @param net
    */
   public void setNetwork(String net) {
     s.Network = net;
+  }
+  
+  public String getNetwork() {
+    return s.Network;
   }
   
   /**
