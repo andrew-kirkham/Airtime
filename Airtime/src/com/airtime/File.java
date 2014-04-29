@@ -58,9 +58,13 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0];
-		s.LastEpisode = Calendar.getInstance();
-		//s.NextEpisode = Date.valueOf(vals[2]);
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(Long.parseLong(vals[1].trim()));
+		s.LastEpisode = (Calendar)c.clone();
+		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
+		s.NextEpisode = (Calendar)c.clone();
 		s.Network = vals[3];
+		s.Status = vals[4];
 		return s;
 	}
 	
