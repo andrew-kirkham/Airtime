@@ -1,6 +1,9 @@
 package com.airtime;
 
+import java.sql.Date;
 import java.util.ArrayList;
+
+import com.airtime.Show.Status;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -34,7 +37,7 @@ public class DetailedFavorite extends Activity {
 		Bundle recdData = getIntent().getExtras();
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
-		String name = recdData.getString("Name");
+		final String name = recdData.getString("Name");
 		tvShowName.setText(name);
 		
 		TextView tvShowNetwork = (TextView) findViewById(R.id.TVshowNetwork);
@@ -51,15 +54,37 @@ public class DetailedFavorite extends Activity {
 		
 		TextView tvShowStatus = (TextView) findViewById(R.id.StatusText);
 		String status = recdData.getString("Status");
-		tvShowStatus.setText(status);	
+		tvShowStatus.setText(status);
+		
+		
 		
 		final Button button = (Button) findViewById(R.id.favoritesButton);
 	    button.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
-	            // Perform action on click
-	        	button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
-	        	button.setText("Remove from Favorites");
+	        	changeButtonState(button, name);
 	        }
 	    });
-	}	
+	}
+	
+	public void reconstructShow(String name, String network, Date lastEp, Date nextEp, Status status){
+		favorite.Name = name;
+		favorite.Network = network;
+		favorite.LastEpisode = lastEp;
+		favorite.NextEpisode = nextEp;
+		favorite.Status = status;
+	}
+	
+	public void changeButtonState(Button button, String favoriteName){
+		File f = new File(this);
+		if(button.getText().equals("Add To Favorites") ){
+			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
+        	button.setText("Remove from Favorites");
+        	f.storeFavorite(favorite);
+		}
+		else{
+			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_green));
+        	button.setText("Add To Favorites");
+        	f.removeLineFromFile(favoriteName);
+		}	
+	}
 }

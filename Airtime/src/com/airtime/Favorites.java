@@ -72,11 +72,9 @@ public class Favorites extends Activity {
 	}
 	
 	public String createDateStrings(Date date){
-		String stringDate;// = date.toString();
+		String stringDate;
 		SimpleDateFormat formatter = new SimpleDateFormat(
                 "EEE MMMM d \n hh:mm a", Locale.getDefault());
-		//stringDate = stringDate.substring(0, stringDate.lastIndexOf('G'));
-		//stringDate = stringDate.substring(0, stringDate.lastIndexOf(':'));
 		stringDate = formatter.format(date).toString();
 		return stringDate; 
 	}

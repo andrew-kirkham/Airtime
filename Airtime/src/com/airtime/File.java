@@ -2,9 +2,13 @@ package com.airtime;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -75,6 +79,64 @@ public class File {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	public void removeLineFromFile(String lineToRemove) {
+		try {
+			java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
+		    java.io.File tempFile = new java.io.File(favorites.getAbsolutePath() + ".tmp");
+		    
+		    BufferedReader reader = new BufferedReader(new FileReader(favorites));
+		    PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+		   
+		    String line = null;
+			
+		    while ((line = reader.readLine()) != null){
+				if(!line.trim().equals(lineToRemove)){
+					pw.println(line);
+			        pw.flush();
+				}
+		    }   
+		    pw.close();
+		    reader.close();
+		    
+		    //Delete the original file
+		    if (!favorites.delete()) {
+		        System.out.println("Could not delete file");
+		        return;
+		      } 
+		      
+		    //Rename the new file to the filename the original file had.
+		    if (!tempFile.renameTo(favorites)){
+		    	System.out.println("Could not rename file");
+		    }
+		  }	
+		catch (FileNotFoundException ex) {
+		      ex.printStackTrace();
+		    }
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//used to check if show is already favorite and set the button state
+	public Boolean ParseFavorite(String favoriteName){
+		try {
+			FileInputStream in = c.openFileInput(FILENAME);
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		    String line = reader.readLine();
+			while (line != null){
+				String[] vals = line.split(",");
+				if(vals[0].equals(favoriteName))
+					return true;
+			}
+			return false;		    
+		} 
+		
+		catch (IOException e) {
+			e.printStackTrace();
+		} 
+		return false;
 	}
 	
 	/**
