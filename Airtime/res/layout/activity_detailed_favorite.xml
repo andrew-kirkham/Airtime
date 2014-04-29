@@ -10,22 +10,11 @@
         android:id="@+id/LastAriedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/lastAiredlabel"
+        android:layout_above="@+id/NextEpText"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lastAiredlabel"
         android:layout_toRightOf="@+id/lastAiredlabel"
         android:text="4/13/14 5:00pm"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <TextView
-        android:id="@+id/NextEpText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/NextEpLabel"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/NextEpLabel"
-        android:text="4/30/14 5:30pm"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
 
@@ -52,17 +41,6 @@
         android:textSize="30dp" />
 
     <TextView
-        android:id="@+id/lastAiredlabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/TVshowNetwork"
-        android:layout_marginTop="18dp"
-        android:text="Last Aired: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <TextView
         android:id="@+id/TVshowNetwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,22 +50,21 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dp" />
 
-    <TextView
-        android:id="@+id/NextEpLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/lastAiredlabel"
-        android:text="Next Ep: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
+    <ImageView
+        android:id="@+id/tvShowIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/StatusText"
+        android:layout_below="@+id/TVshowTitle"
+        android:src="@drawable/sponge" />
 
     <TextView
         android:id="@+id/StatusLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/favoritesButton"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/NextEpLabel"
+        android:layout_marginBottom="20dp"
         android:text="Status: "
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
@@ -96,17 +73,44 @@
         android:id="@+id/favoritesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/StatusText"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/gradient_green"
         android:text="Add to Favorites" />
 
-    <ImageView
-        android:id="@+id/tvShowIcon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/TVshowTitle"
-        android:src="@drawable/sponge" />
+    <TextView
+        android:id="@+id/lastAiredlabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TVshowNetwork"
+        android:layout_toLeftOf="@+id/NextEpText"
+        android:text="Last Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/NextEpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/StatusText"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/NextEpLabel"
+        android:layout_toRightOf="@+id/NextEpLabel"
+        android:text="4/30/14 5:30pm"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/NextEpLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/StatusText"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="37dp"
+        android:text="Next Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
 
 </RelativeLayout>
