@@ -41,7 +41,7 @@ public class SearchAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.list_row, null);
+            vi = inflater.inflate(R.layout.search_row, null);
  
         TextView title = (TextView)vi.findViewById(R.id.title); // title
         TextView airtime = (TextView)vi.findViewById(R.id.airtime); // airtime
