@@ -1,8 +1,17 @@
 package com.airtime;
 
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import com.airtime.model.Series;
 
@@ -10,7 +19,9 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -51,20 +62,37 @@ public class SearchResults extends Activity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-            TheTVDBApi api = new TheTVDBApi();
-            //List<Series> results = api.searchSeries(query, "en");
-            List<Series> results = populateFakeData(query);
-//            for (Series s : results){
-//            	addSeriesToList(s);
-//            }
-            addShowsToList(query);
-            addShowsToTable();
-            setAdapter();
+
+            new SearchTask().execute(query, "en");
+            
             return;
         }
     }
+
+    private class SearchTask extends AsyncTask<String, Void, ArrayList<Show>>{
+		@Override
+		protected ArrayList<Show> doInBackground(String... query) {
+
+			try {
+				// Search the tvdb API
+				SeriesSearchHandler tvdbApiSearch = new SeriesSearchHandler();
+				return tvdbApiSearch.searchSeries(query[0], query[1]);
+
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<Show> results){
+			showResults = results;
+			addShowsToTable();
+			setAdapter();
+		}
+	}
     
-    private void addShowsToTable() {
+	private void addShowsToTable() {
 		adapter = new ShowAdapter(this, showResults);
 		ListView v = (ListView) findViewById(R.id.listView);
 		adapter.notifyDataSetChanged();

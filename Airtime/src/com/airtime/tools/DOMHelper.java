@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,6 +37,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
+
+import android.util.Log;
+
 import com.airtime.tools.CommonHttpClient;
 
 /**
@@ -131,7 +136,8 @@ public class DOMHelper {
             throw new Exception("Unable to parse TheTVDb response, please try again later.", error);
         } catch (IOException error) {
             throw new Exception("Unable to parse TheTVDb response, please try again later.", error);
-        } finally {
+        } catch (Exception e) { Log.e("Airtime", e.toString()); }
+        	finally {
             try {
                 if (in != null) {
                     in.close();
@@ -178,6 +184,8 @@ public class DOMHelper {
             throw new Exception("Unable to encode URL: " + url, ex);
         } catch (IOException ex) {
             throw new Exception("Unable to download URL: " + url, ex);
+        } catch (Exception e){
+        	Log.e("getValidWebpage", e.toString());
         }
 
         return null;
