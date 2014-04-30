@@ -60,8 +60,8 @@ public class SeriesSearchHandler extends DefaultHandler {
 		} catch (Exception e) {
 				Log.e("xml.handlers.SeriesHandler", e.toString());
 		}
-		if (currentSeries.Name == null) currentSeries.Name = "NAME!";
-		if (currentSeries.Network == null) currentSeries.Network = "NETWORK!";
+		if (currentSeries.Name == null) currentSeries.Name = "NOT_FOUND";
+		if (currentSeries.Network == null) currentSeries.Network = "Unknown Network";
 	}
     
 	public ArrayList<Show> searchSeries(String seriesName, String languagePreference) {

@@ -72,10 +72,18 @@ public class SearchResults extends Activity {
 		@Override
 		protected void onPostExecute(ArrayList<Show> results){
 			showResults = results;
+			filterResults();
 			addShowsToTable();
 			setAdapter();
 		}
 	}
+    
+    private void filterResults() {
+    	for (Show s : showResults){
+    		if (s.Name.equals("NOT_FOUND")) showResults.remove(s);
+    		if (s.Id == -1) showResults.remove(s);
+    	}
+    }
     
 	private void addShowsToTable() {
 		adapter = new SearchAdapter(this, showResults);
