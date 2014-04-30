@@ -68,6 +68,7 @@ public class DetailedFavorite extends Activity {
         		intent.putExtra("addable", s);
         		setResult(RESULT_OK, intent);
         		finish();
+        		onBackPressed();
         		f.storeFavorite(s);
         	}
 		}

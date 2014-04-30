@@ -50,7 +50,6 @@ public class SearchResults extends Activity {
         showResults = new ArrayList<Show>();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
             TheTVDBApi api = new TheTVDBApi();
             //List<Series> results = api.searchSeries(query, "en");
             List<Series> results = populateFakeData(query);
