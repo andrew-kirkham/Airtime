@@ -59,13 +59,16 @@ public class DetailedFavorite extends Activity {
 	
 	public void setButton(Button button, Boolean fav, Boolean click, Show s){
 		File f = new File(this);
-		Favorites list = new Favorites();
 		//if(button.getText().equals("Add To Favorites") ){
 		if(fav){
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
         	if(click){
-        		//f.storeFavorite(s);
+        		Intent intent = new Intent();
+        		intent.putExtra("addable", s);
+        		setResult(RESULT_OK, intent);
+        		finish();
+        		f.storeFavorite(s);
         	}
 		}
 		else{
@@ -76,6 +79,7 @@ public class DetailedFavorite extends Activity {
         		intent.putExtra("removeable", s);
         		setResult(RESULT_OK, intent);
         		finish();
+        		f.removeLineFromFile(s);
         	}
 		}	
 	}

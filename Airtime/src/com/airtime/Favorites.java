@@ -44,10 +44,10 @@ public class Favorites extends Activity {
 		favorites = new ArrayList<Show>();
 		favorites = populateTestFavorites();
 		File f = new File(this);
-		f.clearFavorites();
+		/*f.clearFavorites();
 		for (Show s : favorites){
 			f.storeFavorite(s);
-		}
+		}*/
 		favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
@@ -94,8 +94,13 @@ public class Favorites extends Activity {
 	
 	public void removeFromFavoritesList(Show s){
 		if(favorites.contains(s)){
-		favorites.remove(s);
-		//adapter.notifyDataSetChanged();
+			favorites.remove(s);
+		}
+	}
+	
+	public void addToFavoritesList(Show s){
+		if(!(favorites.contains(s))){
+			favorites.add(s);
 		}
 	}
 	
@@ -110,7 +115,6 @@ public class Favorites extends Activity {
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Show", show);
 	            intent.putExtra("isAFavorite", isAFavorite(show));
-	            //startActivity(intent);
 	            int requestCode = 1; // Or some number you choose
 	            startActivityForResult(intent, requestCode);
 			}
@@ -119,10 +123,15 @@ public class Favorites extends Activity {
 	
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
 		  // Collect data from the intent and use it
-		  Bundle recdData = data.getExtras();		  
-		  //Show s = data.getExtras("someValue");
-		   Show s = recdData.getParcelable("removeable");
-		   removeFromFavoritesList(s);
+		  Bundle recdData = data.getExtras();
+		  if(recdData.getParcelable("removeable") != null){
+			  Show s = recdData.getParcelable("removeable");
+			  removeFromFavoritesList(s);
+		  }
+		  if(recdData.getParcelable("addable") != null){
+			  Show s = recdData.getParcelable("addable");
+			  addToFavoritesList(s);
+		  }
 		   adapter.notifyDataSetChanged();
 		}
 	
