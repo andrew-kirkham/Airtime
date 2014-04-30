@@ -1,12 +1,10 @@
 package com.airtime;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;

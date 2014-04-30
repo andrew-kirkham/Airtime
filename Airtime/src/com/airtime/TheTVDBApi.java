@@ -27,6 +27,7 @@ import com.airtime.model.Series;
 import com.airtime.model.TVDBUpdates;
 import com.airtime.tools.DOMHelper;
 import com.airtime.tools.TvdbParser;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -36,10 +37,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.xml.ws.WebServiceException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.airtime.tools.CommonHttpClient;
 import com.airtime.tools.DefaultPoolingHttpClient;
 
@@ -50,7 +52,7 @@ import com.airtime.tools.DefaultPoolingHttpClient;
 public class TheTVDBApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(TheTVDBApi.class);
-    private String apiKey = null;
+    private static final String apiKey = "7C892A3B48BD8F4B";
     private CommonHttpClient httpClient;
     private static String xmlMirror = "http://thetvdb.com/api/";
     private static String bannerMirror = "http://thetvdb.com/banners/";
@@ -61,27 +63,19 @@ public class TheTVDBApi {
     private static final String URL = "URL: ";
 
     /**
-     * Create an API object with the passed API Key
-     *
-     * @param apiKey Must be valid
+     * Create an API object 
      */
-    public TheTVDBApi(String apiKey) {
+    public TheTVDBApi() {
         // No HttpClient passed, so use a default
-        this(apiKey, new DefaultPoolingHttpClient());
+        this(new DefaultPoolingHttpClient());
     }
 
     /**
-     * Create an API object with the passed API key and using the supplied HttpClient
+     * Create an API object using the supplied HttpClient
      *
-     * @param apiKey Must not be null or empty
      * @param httpClient
      */
-    public TheTVDBApi(String apiKey, CommonHttpClient httpClient) {
-        if (StringUtils.isBlank(apiKey)) {
-            return;
-        }
-
-        this.apiKey = apiKey;
+    public TheTVDBApi(CommonHttpClient httpClient) {
         this.httpClient = httpClient;
         DOMHelper.setHttpClient(this.httpClient);
     }
@@ -90,8 +84,9 @@ public class TheTVDBApi {
      * Get the mirror information from TheTVDb
      *
      * @return True if everything is OK, false otherwise.
+     * @throws Exception 
      */
-    private static void getMirrors(String apiKey) {
+    private static void getMirrors(String apiKey) throws Exception {
         // If we don't need to get the mirrors, then just return
         if (xmlMirror != null && bannerMirror != null) {
             return;
@@ -102,13 +97,13 @@ public class TheTVDBApi {
         bannerMirror = mirrors.getMirror(Mirrors.TYPE_BANNER);
 
         if (xmlMirror == null) {
-            throw new WebServiceException("There is a problem getting the xmlMirror data from TheTVDB, this means it is likely to be down.");
+            throw new Exception("There is a problem getting the xmlMirror data from TheTVDB, this means it is likely to be down.");
         } else {
             xmlMirror += "/api/";
         }
 
         if (bannerMirror == null) {
-            throw new WebServiceException("There is a problem getting the bannerMirror data from TheTVDB, this means it is likely to be down.");
+            throw new Exception("There is a problem getting the bannerMirror data from TheTVDB, this means it is likely to be down.");
         } else {
             bannerMirror += "/banners/";
         }
@@ -121,10 +116,11 @@ public class TheTVDBApi {
      * @param port
      * @param username
      * @param password
+     * @throws Exception 
      */
-    public void setProxy(String host, int port, String username, String password) {
+    public void setProxy(String host, int port, String username, String password) throws Exception {
         if (httpClient == null) {
-            throw new WebServiceException("Failed to set proxy information");
+            throw new Exception("Failed to set proxy information");
         } else {
             httpClient.setProxy(host, port, username, password);
         }
@@ -135,10 +131,11 @@ public class TheTVDBApi {
      *
      * @param webTimeoutConnect
      * @param webTimeoutRead
+     * @throws Exception 
      */
-    public void setTimeout(int webTimeoutConnect, int webTimeoutRead) {
+    public void setTimeout(int webTimeoutConnect, int webTimeoutRead) throws Exception {
         if (httpClient == null) {
-            throw new WebServiceException("Failed to set timeout information");
+            throw new Exception("Failed to set timeout information");
         } else {
             httpClient.setTimeouts(webTimeoutConnect, webTimeoutRead);
         }
@@ -162,7 +159,7 @@ public class TheTVDBApi {
             if (language != null) {
                 urlBuilder.append(language).append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return null;
         }
@@ -190,7 +187,7 @@ public class TheTVDBApi {
             StringBuilder urlBuilder = new StringBuilder();
             try {
                 urlBuilder.append(getXmlMirror(apiKey));
-            } catch (WebServiceException ex) {
+            } catch (Exception ex) {
                 LOG.warn(ex.getMessage(), ex);
                 urlBuilder.append("http://thetvdb.com/api/");
             }
@@ -227,7 +224,7 @@ public class TheTVDBApi {
             if (language != null) {
                 urlBuilder.append(language).append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return null;
         }
@@ -270,7 +267,7 @@ public class TheTVDBApi {
             if (language != null) {
                 urlBuilder.append(language).append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new Episode();
         }
@@ -303,7 +300,7 @@ public class TheTVDBApi {
             if (language != null) {
                 urlBuilder.append(language).append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new Episode();
         }
@@ -333,7 +330,7 @@ public class TheTVDBApi {
             if (language != null) {
                 urlBuilder.append(language).append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new Episode();
         }
@@ -383,7 +380,7 @@ public class TheTVDBApi {
             urlBuilder.append(SERIES_URL);
             urlBuilder.append(seriesId);
             urlBuilder.append("/banners.xml");
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new Banners();
         }
@@ -406,7 +403,7 @@ public class TheTVDBApi {
             urlBuilder.append(SERIES_URL);
             urlBuilder.append(seriesId);
             urlBuilder.append("/actors.xml");
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new ArrayList<Actor>();
         }
@@ -429,7 +426,7 @@ public class TheTVDBApi {
             LOG.trace("Failed to encode title: " + title, ex);
             // Try and use the raw title
             urlBuilder.append(title);
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new ArrayList<Series>();
         }
@@ -458,7 +455,7 @@ public class TheTVDBApi {
                 urlBuilder.append(language);
                 urlBuilder.append(XML_EXTENSION);
             }
-        } catch (WebServiceException ex) {
+        } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
             return new Episode();
         }
@@ -486,7 +483,12 @@ public class TheTVDBApi {
      */
     public static String getXmlMirror(String apiKey) {
         // Force a load of the mirror information if it doesn't exist
-        getMirrors(apiKey);
+        try {
+			getMirrors(apiKey);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return xmlMirror;
     }
 
@@ -498,7 +500,12 @@ public class TheTVDBApi {
      */
     public static String getBannerMirror(String apiKey) {
         // Force a load of the mirror information if it doesn't exist
-        getMirrors(apiKey);
+        try {
+			getMirrors(apiKey);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return bannerMirror;
     }
 

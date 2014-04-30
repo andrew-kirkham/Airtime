@@ -20,9 +20,11 @@
 package com.airtime.model;
 
 import com.airtime.tools.DOMHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -49,7 +51,7 @@ public class Mirrors {
     private final List<String> bannerList = new ArrayList<String>();
     private final List<String> zipList = new ArrayList<String>();
 
-    public Mirrors(String apiKey) {
+    public Mirrors(String apiKey) throws Exception {
         // Make this synchronized so that only one
         synchronized (this) {
             String urlString = "http://www.thetvdb.com/api/" + apiKey + "/mirrors.xml";
