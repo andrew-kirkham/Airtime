@@ -37,10 +37,10 @@ public class DetailedFavorite extends Activity {
 		tvShowNetwork.setText(s.Network);
 		
 		TextView tvShowlastAired = (TextView) findViewById(R.id.LastAriedText);
-		tvShowlastAired.setText(createDateStrings(s.LastEpisode));
+		tvShowlastAired.setText(s.LastEpisode);
 		
 		TextView tvShowNextEp = (TextView) findViewById(R.id.NextEpText);
-		tvShowNextEp.setText(createDateStrings(s.NextEpisode));
+		tvShowNextEp.setText(s.getNextEp());
 		
 		TextView tvShowStatus = (TextView) findViewById(R.id.StatusText);
 		tvShowStatus.setText(s.Status);	
@@ -85,8 +85,7 @@ public class DetailedFavorite extends Activity {
 	}
 	
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed() {
 	    super.onBackPressed(); 
 	    startActivity(new Intent(DetailedFavorite.this, Favorites.class));
 	    finish();

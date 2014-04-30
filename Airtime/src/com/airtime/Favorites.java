@@ -1,7 +1,6 @@
 package com.airtime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
@@ -46,7 +45,7 @@ public class Favorites extends Activity {
 		for (Show s : favorites){
 			f.storeFavorite(s);
 		}
-		favorites = f.loadFavorites();
+		//favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();
 		setActionBarDropDown();
@@ -146,11 +145,9 @@ public class Favorites extends Activity {
 			Random r = new Random();
 			s.Name = String.format("Test show name #%d", r.nextInt(100));
 			s.Network = "NBC";
-			Calendar c = Calendar.getInstance();
-			c.set(2014, 2, i + 5);
-			s.NextEpisode = (Calendar)c.clone();
-			s.LastEpisode = (Calendar)c.clone();
-			s.LastEpisode.add(Calendar.DATE, -3);
+			s.NextEpisode = String.format("Friday 3/%d/2014 at 2:00 PM", i);
+			s.LastEpisode = String.format("Friday 2/%d/2014 at 2:00 PM", i);
+			s.AirDate = String.format("3/%d/2014", i+1);
 			s.Status = Status.Ended;
 			shows.add(s);
 		}

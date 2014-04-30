@@ -1,6 +1,5 @@
 package com.airtime;
 
-import java.util.Calendar;
 import java.util.Locale;
 
 import android.os.Parcel;
@@ -16,24 +15,30 @@ public class Show implements Parcelable {
 	/**
 	 * Name of show
 	 */
-	public String Name;
-	/**
-	 * Next episode to air
-	 */
-	public Calendar NextEpisode;
-	/**
-	 * Last episode to air
-	 */
-	public Calendar LastEpisode;
+	public String Name = "Unknown Show";
+	
+	public String AirDate;
+	public String AirTime;
+	public String AirDayOfWeek = "";
+	
+	public String NextEpisode = getNextEp();
+	public String LastEpisode = "Unknown";
+	
+	public String getNextEp(){
+		if (AirDate == null) return "Not Scheduled";
+		else if (AirTime == null) return String.format("%s %s", AirDayOfWeek, AirDate);
+		return String.format("%s %s at %s", AirDayOfWeek, AirDate, AirTime); //ex Friday 3/14/2013 at 9:00 PM
+	}
+	
 	/**
 	 * Network of the show
 	 */
-	public String Network;
+	public String Network = "Unknown Network";
 
 	/**
 	 * The current airing status of the TV show
 	 */
-	public String Status;
+	public String Status = "Unknown Status";
 	
 	/**
 	 * Image url for selected show
@@ -45,63 +50,10 @@ public class Show implements Parcelable {
 	 */
 	public int Id;
 	
-	public String airDay;
-	
-	public String airTime;
-	
 	/**
 	 * Whether this show is a stored favorite
 	 */
-	public Boolean IsAFavorite;
-	
-	public String getStatus() {
-    return Status;
-  }
-  public void setStatus(String status) {
-    this.Status = status;
-  }
-  public String getNetwork() {
-    return Network;
-  }
-  public void setNetwork(String network) {
-    this.Network = network;
-  }
-  public int getId() {
-    return Id;
-  }
-  public void setId(int id) {
-    this.Id = id;
-  }
-  public String getName() {
-    return Name;
-  }
-  public void setName(String name) {
-    this.Name = name;
-  }
-  public Calendar getLastEpisode() {
-    return LastEpisode;
-  }
-  public void setLastEpisode(Calendar lastep) {
-    this.LastEpisode = lastep;
-  }
-  public Calendar getNextEpisode() {
-    return NextEpisode;
-  }
-  public void setNextEpisode(Calendar nextep) {
-    this.NextEpisode = nextep;
-  }
-  public String getAirDay() {
-    return airDay;
-  }
-  public void setAirDay(String airDay) {
-    this.airDay = airDay;
-  }
-  public String getAirTime() {
-    return airTime;
-  }
-  public void setAirTime(String airTime) {
-    this.airTime = airTime;
-  }
+	public Boolean IsAFavorite = false;
   
 //  public WebImage getBanner() {
 //    if (banner == null)
@@ -117,8 +69,8 @@ public class Show implements Parcelable {
 		if (!(obj instanceof Show)) return false;
 		Show s = (Show)obj;
 		if (!(s.Name.equals(Name))) return false;
-		if (s.NextEpisode.compareTo(NextEpisode) != 0) return false;
-		if (s.LastEpisode.compareTo(LastEpisode) != 0) return false;
+		if (!(s.NextEpisode.equals(NextEpisode))) return false;
+		if (!(s.LastEpisode.equals(LastEpisode))) return false;
 		if (!(s.Network.equals(Network))) return false;
 		if (!(s.Status.equals(Status))) return false;
 		if (s.Id != Id) return false;
@@ -145,7 +97,7 @@ public class Show implements Parcelable {
 	 * Required for storing to a text file
 	 */
 	public String toString(){
-		return String.format(Locale.US, "%s, %d, %d, %s, %s\n", Name, NextEpisode.getTimeInMillis(), LastEpisode.getTimeInMillis(), Network, Status);
+		return String.format(Locale.US, "%s, %s, %s, %s, %s\n", Name, NextEpisode, LastEpisode, Network, Status);
 	}
 
 	@Override
@@ -159,9 +111,10 @@ public class Show implements Parcelable {
         dest.writeString(Network);
         dest.writeString(Status);
         dest.writeInt(Id);
-        dest.writeLong(NextEpisode.getTimeInMillis());
-        dest.writeLong(LastEpisode.getTimeInMillis());
         dest.writeByte((byte) (IsAFavorite ? 1 : 0));
+        dest.writeString(AirDate);
+        dest.writeString(AirDayOfWeek);
+        dest.writeString(AirTime);
 	}
 	
 	public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
@@ -172,13 +125,11 @@ public class Show implements Parcelable {
             s.Status = in.readString();
             s.Id = in.readInt();
             
-            Calendar c = Calendar.getInstance();
-            s.NextEpisode = (Calendar)c.clone();
-            s.NextEpisode.setTimeInMillis(in.readLong());
+            s.IsAFavorite = in.readByte() != 0;
             
-            s.LastEpisode = (Calendar)c.clone();
-            s.LastEpisode.setTimeInMillis(in.readLong());
-            s.IsAFavorite = in.readByte() != 0; 
+            s.AirDate = in.readString();
+            s.AirDayOfWeek = in.readString();
+            s.AirTime = in.readString();
             return s;
         }
 

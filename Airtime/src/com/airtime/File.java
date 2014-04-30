@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 import android.content.Context;
@@ -63,11 +62,8 @@ public class File {
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
 		s.Name = vals[0].trim();
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(Long.parseLong(vals[1].trim()));
-		s.NextEpisode = (Calendar)c.clone();
-		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
-		s.LastEpisode = (Calendar)c.clone();
+		s.NextEpisode = vals[1].trim();
+		s.LastEpisode = vals[2].trim();
 		s.Network = vals[3].trim();
 		s.Status = vals[4].trim();
 		s.IsAFavorite = true;

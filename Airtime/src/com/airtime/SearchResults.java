@@ -1,21 +1,18 @@
 package com.airtime;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +29,7 @@ public class SearchResults extends Activity {
 
 	private SearchAdapter adapter;
 	private ArrayList<Show> showResults;
+	private Show selectedShow;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +133,18 @@ public class SearchResults extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-				      Show show = (Show) adapter.getItem(position);
-				      //new DetailsTask(show.Id).execute();
-	            Intent intent = new Intent(SearchResults.this, DetailedFavorite.class); //go to the detailed view when clicked
-	            intent.putExtra("Show", show);
-	            startActivity(intent);   
+				Show show = (Show) adapter.getItem(position);
+				DetailsTask task = new DetailsTask();
+				task.execute(String.valueOf(show.Id));
+				try {
+					Show result = task.get(10, TimeUnit.SECONDS);
+					Intent intent = new Intent(SearchResults.this, DetailedFavorite.class); 
+		            intent.putExtra("Show", result);
+		            int requestCode = 1; // Or some number you choose
+		            startActivityForResult(intent, requestCode);
+				} catch (Exception e) {
+					Log.e("error retrieving details", e.getMessage());
+				}
 			}
 		});
 	}
@@ -183,67 +188,51 @@ public class SearchResults extends Activity {
 		}
 	}
     
-    private class DetailsTask extends ManageableTask {
-      TaskManagementFragment mTaskFragment;
-      int seriesId;
-      
-//      public LoadSeriesDataTask(int seriesId) {
-//        this.seriesId = seriesId;
-//      }
-          
-    @Override
-    protected Show doInBackground(TaskManagementFragment... taskFragment) {
-      try {
-        mTaskFragment = taskFragment[0];
-        Context ctx = mTaskFragment.getActivity();
+    private class DetailsTask extends AsyncTask<String, Void, Show> {
+            
+    	@Override
+      	protected Show doInBackground(String... query) {
+    		try {
+    			int showId = Integer.parseInt(query[0]);
+    			
+    			// 	Lookup basic series info
+    			SeriesDetailsHandler infoQuery = new SeriesDetailsHandler();
+    			Show seriesInfo = infoQuery.getInfo(showId);
 
-        if (ctx == null)
-          return null;
+            /// IMAGE STUFF
+//            Bitmap bitmap;
+//            BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
+  //
+//            if (fileCache.contains(seriesInfo.getBanner().getId())){
+//              bitmap = fileCache.get(seriesInfo.getBanner().getId());
+//            }else{
+//              BitmapWebUtil web = new BitmapWebUtil(ctx);
+//              bitmap = web.downloadBitmap(seriesInfo.getBanner().getUrl());
+//            fileCache.put(seriesInfo.getBanner().getId(), bitmap);
+//          }
+//          seriesInfo.getBanner().setBitmap(bitmap);
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
-        int cacheSize = settings.getInt("cacheSize", 1) * 1000 * 1000;
+//          //There is no need to load the poster at this time.     
+//          
+//          if (fileCache.contains(seriesInfo.getPoster().getId())){
+//              bitmap = fileCache.get(seriesInfo.getPoster().getId());
+//            }else{
+//              BitmapWebUtil web = new BitmapWebUtil(ctx);
+//              bitmap = web.downloadBitmap(seriesInfo.getPoster().getUrl());
+//            fileCache.put(seriesInfo.getPoster().getId(), bitmap);
+//          }
+//          seriesInfo.getPoster().setBitmap(bitmap);
 
+    			return seriesInfo;
+    		}catch (Exception e){
+    			Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
+    		}
+    			return null;
+    	}
 
-        // Lookup basic series info
-        SeriesDetailsHandler infoQuery = new SeriesDetailsHandler(ctx);
-          Show seriesInfo = infoQuery.getInfo(seriesId);
-
-          /// IMAGE STUFF
-//          Bitmap bitmap;
-//          BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
-//
-//          if (fileCache.contains(seriesInfo.getBanner().getId())){
-//            bitmap = fileCache.get(seriesInfo.getBanner().getId());
-//          }else{
-//            BitmapWebUtil web = new BitmapWebUtil(ctx);
-//            bitmap = web.downloadBitmap(seriesInfo.getBanner().getUrl());
-//          fileCache.put(seriesInfo.getBanner().getId(), bitmap);
-//        }
-//        seriesInfo.getBanner().setBitmap(bitmap);
-
-//        //There is no need to load the poster at this time.     
-//        
-//        if (fileCache.contains(seriesInfo.getPoster().getId())){
-//            bitmap = fileCache.get(seriesInfo.getPoster().getId());
-//          }else{
-//            BitmapWebUtil web = new BitmapWebUtil(ctx);
-//            bitmap = web.downloadBitmap(seriesInfo.getPoster().getUrl());
-//          fileCache.put(seriesInfo.getPoster().getId(), bitmap);
-//        }
-//        seriesInfo.getPoster().setBitmap(bitmap);
-
-        return seriesInfo;
-
-      }catch (Exception e){
-        Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
+      @Override
+      protected void onPostExecute(Show s){
+    	  selectedShow = s;
       }
-      return null;
-    }
-
-    @Override
-    protected void onPostExecute(Object info){
-      if (mTaskFragment != null)
-        mTaskFragment.taskFinished(getTaskId(), info);
-    }
-    }
+  }
 }
