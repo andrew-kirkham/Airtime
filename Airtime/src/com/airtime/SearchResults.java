@@ -1,15 +1,19 @@
 package com.airtime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,6 +28,7 @@ public class SearchResults extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_search_results);
 
         ActionBar actionBar = getActionBar(); 
@@ -47,14 +52,41 @@ public class SearchResults extends Activity {
         showResults = new ArrayList<Show>();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-
-            new SearchTask().execute(query, "en");
+            
+            if (isOnline()) new SearchTask().execute(query, "en");
+            else displayNetworkAlert();
             
             return;
         }
     }
 
+    private void displayNetworkAlert() {
+    	new AlertDialog.Builder(this)
+        .setTitle("Warning!")
+        .setMessage("No network connection detected. Please connect to search.")
+        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) { 
+                finish();
+            }
+         })
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show();
+	}
+
+	public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
+    
     private class SearchTask extends AsyncTask<String, Void, ArrayList<Show>>{
+    	@Override
+    	protected void onPreExecute(){
+    		setProgressBarIndeterminateVisibility(true);
+    	}
 		@Override
 		protected ArrayList<Show> doInBackground(String... query) {
 
@@ -71,12 +103,36 @@ public class SearchResults extends Activity {
 
 		@Override
 		protected void onPostExecute(ArrayList<Show> results){
+			if (results == null) {
+				displayNoResults();
+	    		setProgressBarIndeterminateVisibility(false);
+				return;
+			}
 			showResults = results;
 			filterResults();
-			addShowsToTable();
-			setAdapter();
+			if (showResults.size() == 0) displayNoResults();
+			else updateTable();
+    		setProgressBarIndeterminateVisibility(false);
 		}
 	}
+    
+    private void displayNoResults(){
+    	new AlertDialog.Builder(this)
+        .setTitle("Warning!")
+        .setMessage("No results found. Please try again")
+        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) { 
+                finish();
+            }
+         })
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show();
+    }
+    
+    private void updateTable(){
+		addShowsToTable();
+		setAdapter();
+    }
     
     private void filterResults() {
     	for (Show s : showResults){
