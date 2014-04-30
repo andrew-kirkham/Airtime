@@ -45,10 +45,72 @@ public class Show implements Parcelable {
 	 */
 	public int Id;
 	
+	public String airDay;
+	
+	public String airTime;
+	
 	/**
 	 * Whether this show is a stored favorite
 	 */
 	public Boolean IsAFavorite;
+	
+	public String getStatus() {
+    return Status;
+  }
+  public void setStatus(String status) {
+    this.Status = status;
+  }
+  public String getNetwork() {
+    return Network;
+  }
+  public void setNetwork(String network) {
+    this.Network = network;
+  }
+  public int getId() {
+    return Id;
+  }
+  public void setId(int id) {
+    this.Id = id;
+  }
+  public String getName() {
+    return Name;
+  }
+  public void setName(String name) {
+    this.Name = name;
+  }
+  public Calendar getLastEpisode() {
+    return LastEpisode;
+  }
+  public void setLastEpisode(Calendar lastep) {
+    this.LastEpisode = lastep;
+  }
+  public Calendar getNextEpisode() {
+    return NextEpisode;
+  }
+  public void setNextEpisode(Calendar nextep) {
+    this.NextEpisode = nextep;
+  }
+  public String getAirDay() {
+    return airDay;
+  }
+  public void setAirDay(String airDay) {
+    this.airDay = airDay;
+  }
+  public String getAirTime() {
+    return airTime;
+  }
+  public void setAirTime(String airTime) {
+    this.airTime = airTime;
+  }
+  
+//  public WebImage getBanner() {
+//    if (banner == null)
+//      banner = new WebImage();
+//    return banner;
+//  }
+//  public void setBanner(WebImage banner) {
+//    this.banner = banner;
+//  }
 	
 	@Override
 	public boolean equals(Object obj){
