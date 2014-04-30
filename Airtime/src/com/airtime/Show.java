@@ -45,6 +45,11 @@ public class Show implements Parcelable {
 	 */
 	public int Id;
 	
+	/**
+	 * Whether this show is a stored favorite
+	 */
+	public Boolean IsAFavorite;
+	
 	@Override
 	public boolean equals(Object obj){
 		if (!(obj instanceof Show)) return false;
@@ -55,6 +60,7 @@ public class Show implements Parcelable {
 		if (!(s.Network.equals(Network))) return false;
 		if (s.Status != Status) return false;
 		if (s.Id != Id) return false;
+		if (s.IsAFavorite != IsAFavorite) return false;
 		return true;
 	}
 	
@@ -93,6 +99,7 @@ public class Show implements Parcelable {
         dest.writeInt(Id);
         dest.writeLong(NextEpisode.getTimeInMillis());
         dest.writeLong(LastEpisode.getTimeInMillis());
+        dest.writeByte((byte) (IsAFavorite ? 1 : 0));
 	}
 	
 	public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
@@ -109,6 +116,7 @@ public class Show implements Parcelable {
             
             s.LastEpisode = (Calendar)c.clone();
             s.LastEpisode.setTimeInMillis(in.readLong());
+            s.IsAFavorite = in.readByte() != 0; 
             return s;
         }
 

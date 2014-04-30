@@ -46,7 +46,7 @@ public class DetailedFavorite extends Activity {
 		
 		
 		final Button button = (Button) findViewById(R.id.favoritesButton);
-		final Boolean isAFavorite = recdData.getBoolean("isAFavorite");
+		final Boolean isAFavorite = s.IsAFavorite;
 		setButton(button , isAFavorite, false, s);
 	    button.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {

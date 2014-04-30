@@ -85,13 +85,6 @@ public class Favorites extends Activity {
 	    getActionBar().setListNavigationCallbacks(adapter, navigationListener);
 	}
 	
-	public Boolean isAFavorite(Show s){
-		if(favorites.contains(s)){
-			return true;
-		}
-		else return false;
-	}
-	
 	public void removeFromFavoritesList(Show s){
 		if(favorites.contains(s)){
 			favorites.remove(s);
@@ -110,7 +103,6 @@ public class Favorites extends Activity {
 				Show show = (Show) adapter.getItem(position);
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Show", show);
-	            intent.putExtra("isAFavorite", isAFavorite(show));
 	            startActivity(intent);   
 			}
 		});
@@ -148,8 +140,8 @@ public class Favorites extends Activity {
 			Calendar c = Calendar.getInstance();
 			c.set(2014, 2, i + 5);
 			s.NextEpisode = (Calendar)c.clone();
-			c.add(Calendar.DATE, -3);
-			s.LastEpisode = c;
+			s.LastEpisode = (Calendar)c.clone();
+			s.LastEpisode.add(Calendar.DATE, -3);
 			s.Status = Status.Ended;
 			shows.add(s);
 		}

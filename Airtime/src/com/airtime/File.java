@@ -65,11 +65,12 @@ public class File {
 		s.Name = vals[0];
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(Long.parseLong(vals[1].trim()));
-		s.LastEpisode = (Calendar)c.clone();
-		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
 		s.NextEpisode = (Calendar)c.clone();
+		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
+		s.LastEpisode = (Calendar)c.clone();
 		s.Network = vals[3];
 		s.Status = vals[4];
+		s.IsAFavorite = true;
 		return s;
 	}
 	
