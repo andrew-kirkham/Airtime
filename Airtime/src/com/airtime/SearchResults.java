@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -25,10 +26,13 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class SearchResults extends Activity {
 
+	private SearchAdapter adapter;
+	private ArrayList<Show> showResults;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); //allows the spinning wheel to be shown
 		setContentView(R.layout.activity_search_results);
 
         ActionBar actionBar = getActionBar(); 
@@ -43,8 +47,6 @@ public class SearchResults extends Activity {
         handleIntent(intent);
     }
 
-	private SearchAdapter adapter;
-	private ArrayList<Show> showResults;
     /**
      * Handle the search query
      */
@@ -60,6 +62,9 @@ public class SearchResults extends Activity {
         }
     }
 
+    /**
+     * Inform the user of no network connection. Returns to the favorites view after the OK button is selected
+     */
     private void displayNetworkAlert() {
     	new AlertDialog.Builder(this)
         .setTitle("Warning!")
@@ -73,6 +78,10 @@ public class SearchResults extends Activity {
         .show();
 	}
 
+    /**
+     * Checks whether the user is connected to the internet using wifi or through a data plan
+     * @return connected status
+     */
 	public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -82,40 +91,9 @@ public class SearchResults extends Activity {
         return false;
     }
     
-    private class SearchTask extends AsyncTask<String, Void, ArrayList<Show>>{
-    	@Override
-    	protected void onPreExecute(){
-    		setProgressBarIndeterminateVisibility(true);
-    	}
-		@Override
-		protected ArrayList<Show> doInBackground(String... query) {
-
-			try {
-				// Search the tvdb API
-				SeriesSearchHandler tvdbApiSearch = new SeriesSearchHandler();
-				return tvdbApiSearch.searchSeries(query[0], query[1]);
-
-			}catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(ArrayList<Show> results){
-			if (results == null) {
-				displayNoResults();
-	    		setProgressBarIndeterminateVisibility(false);
-				return;
-			}
-			showResults = results;
-			filterResults();
-			if (showResults.size() == 0) displayNoResults();
-			else updateTable();
-    		setProgressBarIndeterminateVisibility(false);
-		}
-	}
-    
+    /**
+     * Display an alert to the user informing them of no results. Returns to the Favorites view
+     */
     private void displayNoResults(){
     	new AlertDialog.Builder(this)
         .setTitle("Warning!")
@@ -129,11 +107,10 @@ public class SearchResults extends Activity {
         .show();
     }
     
-    private void updateTable(){
-		addShowsToTable();
-		setAdapter();
-    }
-    
+    /**
+     * Verify each result in the returned series is usuable.
+     * Shows are not usuable if they do not have a name or an ID
+     */
     private void filterResults() {
     	for (Show s : showResults){
     		if (s.Name.equals("NOT_FOUND")) showResults.remove(s);
@@ -141,25 +118,61 @@ public class SearchResults extends Activity {
     	}
     }
     
-	private void addShowsToTable() {
-		adapter = new SearchAdapter(this, showResults);
-		ListView v = (ListView) findViewById(R.id.listView);
-		adapter.notifyDataSetChanged();
-		v.setAdapter(adapter);
-	}
-    
-    private void setAdapter() {
+	/**
+	 * Initialize the adapter and populate the listview with show data
+	 */
+    private void populateList() {
 		ListView listView = (ListView) findViewById(R.id.listView);
 		adapter = new SearchAdapter(this, showResults);
 		listView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				Show show = (Show) adapter.getItem(position);
-	            Intent intent = new Intent(SearchResults.this, DetailedFavorite.class); 
+	            Intent intent = new Intent(SearchResults.this, DetailedFavorite.class); //go to the detailed view when clicked
 	            intent.putExtra("Show", show);
 	            startActivity(intent);   
 			}
 		});
+	}
+
+    /**
+     * Query TheTvDb in the background for the list of shows matching a query.
+     * NOTES: Since queries cannot be done in the main thread, an asynchronous task must be used. The main thread displays
+     * a spinner wheel until this thread returns.
+     * @author Andrew
+     * 
+     */
+    private class SearchTask extends AsyncTask<String, Void, ArrayList<Show>>{
+    	@Override
+    	protected void onPreExecute(){
+    		setProgressBarIndeterminateVisibility(true);
+    	}
+		@Override
+		protected ArrayList<Show> doInBackground(String... query) {
+			try {
+				SeriesSearchHandler tvdbApiSearch = new SeriesSearchHandler();
+				return tvdbApiSearch.searchSeries(query[0], query[1]);
+
+			}catch (Exception e){
+				Log.e("Querying TheTvDb failed", e.getMessage());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<Show> results){
+			if (results == null) { //nothing was found matching the query
+				displayNoResults();
+	    		setProgressBarIndeterminateVisibility(false);
+				return;
+			}
+			showResults = results;
+			filterResults();
+			if (showResults.size() == 0) displayNoResults(); //nothing usuable was found matching the query
+			else populateList();
+    		setProgressBarIndeterminateVisibility(false); //stop the spinning wheel
+		}
 	}
 }

@@ -92,7 +92,6 @@ public class File {
 	//should be converted to take show object later once it is properly reconstructed in detailed favs
 	public void removeLineFromFile(Show s) {
 		try {
-			java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
 		    java.io.File tempFile = new java.io.File(favorites.getAbsolutePath() + ".tmp");
 		    
 		    BufferedReader reader = new BufferedReader(new FileReader(favorites));

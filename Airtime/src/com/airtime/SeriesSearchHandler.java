@@ -3,7 +3,6 @@ package com.airtime;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 import javax.xml.parsers.SAXParser;
@@ -17,6 +16,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 
+/**
+ * Queries TheTvDb for all shows matching the given query and handles the parsing of the XML
+ * @author Andrew
+ *
+ */
 public class SeriesSearchHandler extends DefaultHandler {
 	private Show currentSeries = null;
     private ArrayList<Show> seriesList = null;
@@ -24,16 +28,14 @@ public class SeriesSearchHandler extends DefaultHandler {
     
     @Override
 	public void startElement(String uri, String name, String qName, Attributes atts) {
-	    name = name.trim().toLowerCase(Locale.getDefault());				// format the current element name
-	    sb = new StringBuilder();						// Reset the string builder
+	    name = name.trim().toLowerCase(Locale.getDefault());
+	    sb = new StringBuilder();
 
-	    if (name.equals("series")){						// If this is a new node, create a new instance
+	    if (name.equals("series")){
 	    	currentSeries = new Show();
     	}
     }
     
-    // SAX parsers may return all contiguous character data in a single chunk, or they may split it into several chunks
-    // Therefore we must aggregate the data here, and set it in endElement() function
 	@Override
 	public void characters(char ch[], int start, int length) {
 		String chars = (new String(ch).substring(start, start + length));
@@ -42,6 +44,9 @@ public class SeriesSearchHandler extends DefaultHandler {
 
 
     @Override
+    /**
+     * Processing to do after the entire file has been read in
+     */
 	public void endElement(String uri, String name, String qName) throws SAXException {
 		try {
 			name = name.trim().toLowerCase(Locale.getDefault());
@@ -52,8 +57,6 @@ public class SeriesSearchHandler extends DefaultHandler {
 				currentSeries.Id = Integer.valueOf(sb.toString());
 			}else if (name.equals("seriesname")){
 				currentSeries.Name = sb.toString();
-			}else if (name.equals("banner")){
-				currentSeries.NextEpisode = Calendar.getInstance();
 			}else if (name.equals("network")){
 				currentSeries.Network = sb.toString();
 			}
@@ -64,6 +67,12 @@ public class SeriesSearchHandler extends DefaultHandler {
 		if (currentSeries.Network == null) currentSeries.Network = "Unknown Network";
 	}
     
+    /**
+     * Search TheTvDb for all shows matching a given string
+     * @param seriesName The string to match for. All shows containing the string will be returned
+     * @param languagePreference The desired language to search for. Ex 'en' for English
+     * @return
+     */
 	public ArrayList<Show> searchSeries(String seriesName, String languagePreference) {
 	    try {
 	    	URL url = new URL("http://www.thetvdb.com/api/GetSeries.php?seriesname=" + URLEncoder.encode(seriesName,"UTF-8") + "&language=en");		//http://www.thetvdb.com/api/GetSeries.php?seriesname=

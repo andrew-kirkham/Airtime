@@ -1,11 +1,9 @@
 package com.airtime;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.Random;
 
 import android.app.ActionBar;
@@ -126,14 +124,6 @@ public class Favorites extends Activity {
 		  }
 		   adapter.notifyDataSetChanged();
 		}
-	
-	public String createDateStrings(Calendar date){
-		String stringDate;
-		SimpleDateFormat formatter = new SimpleDateFormat(
-                "EEE MMMM d \n hh:mm a", Locale.getDefault());
-		stringDate = formatter.format(date.getTime()).toString();
-		return stringDate; 
-	}
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
