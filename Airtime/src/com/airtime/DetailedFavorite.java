@@ -83,6 +83,15 @@ public class DetailedFavorite extends Activity {
         	}
 		}	
 	}
+	
+	@Override
+	public void onBackPressed()
+	{
+	    super.onBackPressed(); 
+	    startActivity(new Intent(DetailedFavorite.this, Favorites.class));
+	    finish();
+
+	}
 	public String createDateStrings(Calendar date){
 		String stringDate;
 		SimpleDateFormat formatter = new SimpleDateFormat(
