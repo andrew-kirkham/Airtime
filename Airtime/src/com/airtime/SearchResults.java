@@ -6,9 +6,14 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -91,11 +96,76 @@ public class SearchResults extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-				Show show = (Show) adapter.getItem(position);
+				      Show show = (Show) adapter.getItem(position);
+				      //new DetailsTask(show.Id).execute();
 	            Intent intent = new Intent(SearchResults.this, DetailedFavorite.class); 
 	            intent.putExtra("Show", show);
 	            startActivity(intent);   
 			}
 		});
 	}
+    
+    private class DetailsTask extends ManageableTask {
+      TaskManagementFragment mTaskFragment;
+      int seriesId;
+      
+//      public LoadSeriesDataTask(int seriesId) {
+//        this.seriesId = seriesId;
+//      }
+          
+    @Override
+    protected Show doInBackground(TaskManagementFragment... taskFragment) {
+      try {
+        mTaskFragment = taskFragment[0];
+        Context ctx = mTaskFragment.getActivity();
+
+        if (ctx == null)
+          return null;
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
+        int cacheSize = settings.getInt("cacheSize", 1) * 1000 * 1000;
+
+
+        // Lookup basic series info
+        SeriesDetailsHandler infoQuery = new SeriesDetailsHandler(ctx);
+          Show seriesInfo = infoQuery.getInfo(seriesId);
+
+          /// IMAGE STUFF
+//          Bitmap bitmap;
+//          BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
+//
+//          if (fileCache.contains(seriesInfo.getBanner().getId())){
+//            bitmap = fileCache.get(seriesInfo.getBanner().getId());
+//          }else{
+//            BitmapWebUtil web = new BitmapWebUtil(ctx);
+//            bitmap = web.downloadBitmap(seriesInfo.getBanner().getUrl());
+//          fileCache.put(seriesInfo.getBanner().getId(), bitmap);
+//        }
+//        seriesInfo.getBanner().setBitmap(bitmap);
+
+//        //There is no need to load the poster at this time.     
+//        
+//        if (fileCache.contains(seriesInfo.getPoster().getId())){
+//            bitmap = fileCache.get(seriesInfo.getPoster().getId());
+//          }else{
+//            BitmapWebUtil web = new BitmapWebUtil(ctx);
+//            bitmap = web.downloadBitmap(seriesInfo.getPoster().getUrl());
+//          fileCache.put(seriesInfo.getPoster().getId(), bitmap);
+//        }
+//        seriesInfo.getPoster().setBitmap(bitmap);
+
+        return seriesInfo;
+
+      }catch (Exception e){
+        Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
+      }
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object info){
+      if (mTaskFragment != null)
+        mTaskFragment.taskFinished(getTaskId(), info);
+    }
+    }
 }
