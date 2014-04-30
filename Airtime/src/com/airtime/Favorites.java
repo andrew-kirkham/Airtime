@@ -89,8 +89,12 @@ public class Favorites extends Activity {
 		if(favorites.contains(s)){
 			favorites.remove(s);
 		}
-		
-		adapter.notifyDataSetChanged();
+	}
+	
+	public void addToFavoritesList(Show s){
+		if(!(favorites.contains(s))){
+			favorites.add(s);
+		}
 	}
 	
 	private void setAdapter() {
@@ -103,10 +107,25 @@ public class Favorites extends Activity {
 				Show show = (Show) adapter.getItem(position);
 	            Intent intent = new Intent(Favorites.this, DetailedFavorite.class); 
 	            intent.putExtra("Show", show);
-	            startActivity(intent);   
+	            int requestCode = 1; // Or some number you choose
+	            startActivityForResult(intent, requestCode);
 			}
 		});
 	}
+	
+	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+		  // Collect data from the intent and use it
+		  Bundle recdData = data.getExtras();
+		  if(recdData.getParcelable("removeable") != null){
+			  Show s = recdData.getParcelable("removeable");
+			  removeFromFavoritesList(s);
+		  }
+		  if(recdData.getParcelable("addable") != null){
+			  Show s = recdData.getParcelable("addable");
+			  addToFavoritesList(s);
+		  }
+		   adapter.notifyDataSetChanged();
+		}
 	
 	public String createDateStrings(Calendar date){
 		String stringDate;

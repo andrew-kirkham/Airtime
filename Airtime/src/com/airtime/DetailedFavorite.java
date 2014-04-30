@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,21 +59,27 @@ public class DetailedFavorite extends Activity {
 	
 	public void setButton(Button button, Boolean fav, Boolean click, Show s){
 		File f = new File(this);
-		Favorites list = new Favorites();
 		//if(button.getText().equals("Add To Favorites") ){
 		if(fav){
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
         	if(click){
-        		//f.storeFavorite(s);
+        		Intent intent = new Intent();
+        		intent.putExtra("addable", s);
+        		setResult(RESULT_OK, intent);
+        		finish();
+        		f.storeFavorite(s);
         	}
 		}
 		else{
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_green));
         	button.setText("Add To Favorites");
-        	if(click){       	
-        		//f.removeLineFromFile(favorite.Name);
-        		//list.removeFromFavoritesList(s);
+        	if(click){ 
+        		Intent intent = new Intent();
+        		intent.putExtra("removeable", s);
+        		setResult(RESULT_OK, intent);
+        		finish();
+        		f.removeLineFromFile(s);
         	}
 		}	
 	}

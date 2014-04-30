@@ -62,14 +62,14 @@ public class File {
 	
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
-		s.Name = vals[0];
+		s.Name = vals[0].trim();
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(Long.parseLong(vals[1].trim()));
 		s.NextEpisode = (Calendar)c.clone();
 		c.setTimeInMillis(Long.parseLong(vals[2].trim()));
 		s.LastEpisode = (Calendar)c.clone();
-		s.Network = vals[3];
-		s.Status = vals[4];
+		s.Network = vals[3].trim();
+		s.Status = vals[4].trim();
 		s.IsAFavorite = true;
 		return s;
 	}
@@ -90,35 +90,27 @@ public class File {
 	}
 	
 	//should be converted to take show object later once it is properly reconstructed in detailed favs
-	public void removeLineFromFile(String lineToRemove) {
+	public void removeLineFromFile(Show s) {
 		try {
 			java.io.File favorites = new java.io.File(c.getFilesDir(), FILENAME);
 		    java.io.File tempFile = new java.io.File(favorites.getAbsolutePath() + ".tmp");
 		    
 		    BufferedReader reader = new BufferedReader(new FileReader(favorites));
 		    PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-		   
-		    String line = null;
+			String line = null;
 			
 		    while ((line = reader.readLine()) != null){
-				if(!line.trim().equals(lineToRemove)){
+				if(!(s.toString().trim().equalsIgnoreCase(line.trim()))){
 					pw.println(line);
 			        pw.flush();
 				}
 		    }   
 		    pw.close();
-		    reader.close();
-		    
+		    reader.close();	    
 		    //Delete the original file
-		    if (!favorites.delete()) {
-		        System.out.println("Could not delete file");
-		        return;
-		      } 
-		      
+		    favorites.delete(); 
 		    //Rename the new file to the filename the original file had.
-		    if (!tempFile.renameTo(favorites)){
-		    	System.out.println("Could not rename file");
-		    }
+		    tempFile.renameTo(favorites);
 		  }	
 		catch (FileNotFoundException ex) {
 		      ex.printStackTrace();
