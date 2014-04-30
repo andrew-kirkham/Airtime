@@ -1,5 +1,9 @@
 package com.airtime;
 
+import java.util.List;
+
+import com.airtime.model.Series;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -38,6 +42,9 @@ public class SearchResults extends Activity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+            TheTVDBApi api = new TheTVDBApi();
+            List<Series> results = api.searchSeries(query, "en");
+            return;
         }
  
     }
