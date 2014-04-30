@@ -54,6 +54,8 @@ public class SearchResults extends Activity {
         showResults = new ArrayList<Show>();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            ActionBar ab = getActionBar();
+            ab.setTitle("Results for: " + query);
             
             if (isOnline()) new SearchTask().execute(query, "en");
             else displayNetworkAlert();
