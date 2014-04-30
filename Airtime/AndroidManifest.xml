@@ -40,7 +40,11 @@
         <!-- Detailed activity -->
         <activity
             android:name="com.airtime.DetailedFavorite"
-            android:label="@string/title_activity_detailed_favorite" >
+            android:label="@string/title_activity_detailed_favorite"
+            android:parentActivityName="com.airtime.Favorites" >
+        <meta-data
+            android:name="android.support.Favorites"
+            android:value="com.airtime.Favorites" /> 
         </activity>
         
         <!--  Search Results Activity -->

@@ -50,10 +50,10 @@ public class Show implements Parcelable {
 		if (!(obj instanceof Show)) return false;
 		Show s = (Show)obj;
 		if (!(s.Name.equals(Name))) return false;
-		if (s.NextEpisode != NextEpisode) return false;
-		if (s.LastEpisode != LastEpisode) return false;
+		if (s.NextEpisode.compareTo(NextEpisode) != 0) return false;
+		if (s.LastEpisode.compareTo(LastEpisode) != 0) return false;
 		if (!(s.Network.equals(Network))) return false;
-		if (s.Status != Status) return false;
+		if (!(s.Status.equals(Status))) return false;
 		if (s.Id != Id) return false;
 		return true;
 	}
