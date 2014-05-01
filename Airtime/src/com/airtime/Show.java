@@ -26,6 +26,8 @@ public class Show implements Parcelable {
 	public String AirDayOfWeek = "";
 	
 	public String NextEpisode = getNextEp();
+	private Episode NextEp;
+	private Episode LastEp;
 	public String LastEpisode = getLastEp();
 	
 	public ArrayList<Episode> Episodes;
@@ -35,9 +37,10 @@ public class Show implements Parcelable {
 	}
 	
 	public String getNextEp(){
-		Episode e = getNextEpisode();
-		if (e.AirYear == 0) return "Not Scheduled";
-		return String.format("%s %s/%s at %s", AirDayOfWeek, e.AirMonth, e.AirDay, AirTime);
+		NextEp = getNextEpisode();
+		if (NextEp.AirYear == 0) return "Not Scheduled";
+		return String.format("S%dE%d %s\n %s %s/%s at %s", NextEp.SeasonNumber, NextEp.EpisodeNumber, NextEp.Name, 
+				AirDayOfWeek, NextEp.AirMonth, NextEp.AirDay, AirTime);
 	}
 	
 	private Episode getNextEpisode() {
@@ -55,9 +58,10 @@ public class Show implements Parcelable {
 	}
 
 	public String getLastEp(){
-		Episode e = getLastEpisode();
-		if (e.AirYear == 0) return "Unknown";
-		return String.format("%s %s/%s at %s", AirDayOfWeek, e.AirMonth, e.AirDay, AirTime);
+		LastEp = getLastEpisode();
+		if (LastEp.AirYear == 0) return "Unknown";
+		return String.format("S%dE%d %s\n %s %s/%s at %s", LastEp.SeasonNumber, LastEp.EpisodeNumber, LastEp.Name, 
+				AirDayOfWeek, LastEp.AirMonth, LastEp.AirDay, AirTime);
 	}
 	
 	private Episode getLastEpisode(){
@@ -141,7 +145,7 @@ public class Show implements Parcelable {
 	 * Required for storing to a text file
 	 */
 	public String toString(){
-		return String.format(Locale.US, "%s, %s, %s, %s, %s\n", Name, NextEpisode, LastEpisode, Network, Status);
+		return String.format(Locale.US, "%s, %s, %s, %s, %s\n", Name, NextEp.Id, LastEp.Id, Network, Status);
 	}
 
 	@Override

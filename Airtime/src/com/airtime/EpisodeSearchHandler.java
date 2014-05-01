@@ -49,6 +49,7 @@ public class EpisodeSearchHandler extends DefaultHandler {
     		switch (name){
     			case "episode":
     				episodes.add(e);
+    				break;
 	    		case "episodename":
 	    			e.Name = sb.toString();
 	    			break;
