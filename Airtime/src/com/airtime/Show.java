@@ -21,14 +21,13 @@ public class Show implements Parcelable {
 	 */
 	public String Name = "Unknown Show";
 	
-	public String AirDate;
 	public String AirTime;
 	public String AirDayOfWeek = "";
 	
-	public String NextEpisode = getNextEp();
+	private String NextEpisode = getNextEp();
 	private Episode NextEp;
 	private Episode LastEp;
-	public String LastEpisode = getLastEp();
+	private String LastEpisode = getLastEp();
 	
 	public ArrayList<Episode> Episodes;
 	
@@ -39,8 +38,8 @@ public class Show implements Parcelable {
 	public String getNextEp(){
 		NextEp = getNextEpisode();
 		if (NextEp.AirYear == 0) return "Not Scheduled";
-		return String.format("S%dE%d %s\n %s %s/%s at %s", NextEp.SeasonNumber, NextEp.EpisodeNumber, NextEp.Name, 
-				AirDayOfWeek, NextEp.AirMonth, NextEp.AirDay, AirTime);
+		return String.format("S%dE%d: %s\n%s %s/%s/%s\n%s", NextEp.SeasonNumber, NextEp.EpisodeNumber, NextEp.Name, 
+				AirDayOfWeek, NextEp.AirMonth, NextEp.AirDay, NextEp.AirYear, AirTime);
 	}
 	
 	private Episode getNextEpisode() {
@@ -60,8 +59,8 @@ public class Show implements Parcelable {
 	public String getLastEp(){
 		LastEp = getLastEpisode();
 		if (LastEp.AirYear == 0) return "Unknown";
-		return String.format("S%dE%d %s\n %s %s/%s at %s", LastEp.SeasonNumber, LastEp.EpisodeNumber, LastEp.Name, 
-				AirDayOfWeek, LastEp.AirMonth, LastEp.AirDay, AirTime);
+		return String.format("S%dE%d: %s\n%s %s/%s/%s\n%s", LastEp.SeasonNumber, LastEp.EpisodeNumber, LastEp.Name, 
+				AirDayOfWeek, LastEp.AirMonth, LastEp.AirDay, LastEp.AirYear, AirTime);
 	}
 	
 	private Episode getLastEpisode(){
@@ -145,7 +144,7 @@ public class Show implements Parcelable {
 	 * Required for storing to a text file
 	 */
 	public String toString(){
-		return String.format(Locale.US, "%s, %s, %s, %s, %s\n", Name, NextEp.Id, LastEp.Id, Network, Status);
+		return String.format(Locale.US, "%d\n", Id);
 	}
 
 	@Override
@@ -160,7 +159,6 @@ public class Show implements Parcelable {
         dest.writeString(Status);
         dest.writeInt(Id);
         dest.writeByte((byte) (IsAFavorite ? 1 : 0));
-        dest.writeString(AirDate);
         dest.writeString(AirDayOfWeek);
         dest.writeString(AirTime);
         dest.writeList(Episodes);
@@ -176,7 +174,6 @@ public class Show implements Parcelable {
             
             s.IsAFavorite = in.readByte() != 0;
             
-            s.AirDate = in.readString();
             s.AirDayOfWeek = in.readString();
             s.AirTime = in.readString();
             ArrayList<Episode> ep = new ArrayList<Episode>();

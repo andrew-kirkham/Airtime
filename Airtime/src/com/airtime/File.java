@@ -15,6 +15,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class File {
 	
@@ -42,8 +43,8 @@ public class File {
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    shows = parseStoredFavorites(reader);
 		    
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			Log.e("error loading favorites", e.getMessage());
 		}
 		return shows;
 	}
@@ -61,12 +62,7 @@ public class File {
 	
 	private Show parseShow(String[] vals) {
 		Show s = new Show();
-		s.Name = vals[0].trim();
-		s.NextEpisode = vals[1].trim();
-		s.LastEpisode = vals[2].trim();
-		s.Network = vals[3].trim();
-		s.Status = vals[4].trim();
-		s.IsAFavorite = true;
+		s.Id = Integer.parseInt(vals[0]);
 		return s;
 	}
 	

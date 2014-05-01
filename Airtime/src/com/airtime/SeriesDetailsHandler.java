@@ -63,7 +63,6 @@ public class SeriesDetailsHandler extends DefaultHandler {
 	    			currentSeries.AirDayOfWeek = sb.toString();
 	    			break;
     		}
-    		currentSeries.LastEpisode = "DO ME";
       
 //    else if (name.equals("banner")){
 //      currentSeries.getBanner().setUrl(AppSettings.BANNER_URL + sb.toString());

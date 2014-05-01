@@ -3,13 +3,18 @@ package com.airtime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -39,18 +44,65 @@ public class Favorites extends Activity {
 		bar.setIcon(R.drawable.logo_final_icon); //set the action bar icon to be Airtime logo
 		
 		favorites = new ArrayList<Show>();
-		favorites = populateTestFavorites();
-//		File f = new File(this);
-//		f.clearFavorites();
-//		for (Show s : favorites){
-//			f.storeFavorite(s);
-//		}
-		//favorites = f.loadFavorites();
+		File f = new File(this);
+		favorites = f.loadFavorites();
+		if (!isOnline()) displayNetworkAlert();
+		updateFavorites();
 		addShowsToTable();
 		setAdapter();
 		setActionBarDropDown();
 	}
 
+	private void updateFavorites(){
+		ArrayList<Show> updatedList = new ArrayList<Show>();
+		for (Show fav : favorites){
+			Show s = updateShow(fav.Id);
+			if (s.equals(new Show())) continue;
+			updatedList.add(s);
+		}
+		favorites = updatedList;
+	}
+	
+	private Show updateShow(int id){
+		Show result = new Show();
+		DetailsTask task = new DetailsTask();
+		task.execute(String.valueOf(id));
+		try {
+			result = task.get(10, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			Log.e("error retrieving details", e.getMessage());
+		}
+		return result;
+	}
+	
+	/**
+     * Inform the user of no network connection. Returns to the favorites view after the OK button is selected
+     */
+    private void displayNetworkAlert() {
+    	new AlertDialog.Builder(this)
+        .setTitle("Warning!")
+        .setMessage("No network connection detected. Please connect to search.")
+        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) { 
+                finish();
+            }
+         })
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show();
+	}
+
+    /**
+     * Checks whether the user is connected to the internet using wifi or through a data plan
+     * @return connected status
+     */
+	public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
 	/**
 	 * Define the actions for the dropdown menu
 	 */
@@ -138,22 +190,6 @@ public class Favorites extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 	
-	private ArrayList<Show> populateTestFavorites(){
-		ArrayList<Show> shows = new ArrayList<Show>();
-		for (int i = 0; i < 20; i++){
-			Show s = new Show();
-			Random r = new Random();
-			s.Name = String.format("Test show name #%d", r.nextInt(100));
-			s.Network = "NBC";
-			s.NextEpisode = String.format("Friday 3/%d/2014 at 2:00 PM", i);
-			s.LastEpisode = String.format("Friday 2/%d/2014 at 2:00 PM", i);
-			s.AirDate = String.format("3/%d/2014", i+1);
-			s.Status = Status.Ended;
-			shows.add(s);
-		}
-		return shows;
-	}
-	
 	/**
 	 * Add the list of shows to the adapter to view them
 	 */
@@ -182,7 +218,7 @@ public class Favorites extends Activity {
 	public void sortByNextAirtime(){
 		Collections.sort(favorites, new Comparator<Show>(){
 		    public int compare(Show s1, Show s2) {
-		        return s1.NextEpisode.compareTo(s2.NextEpisode);
+		        return s1.getNextEp().compareTo(s2.getNextEp());
 		    }
 		});
 		adapter.notifyDataSetChanged();
@@ -194,7 +230,7 @@ public class Favorites extends Activity {
 	public void sortByLastAirtime(){
 		Collections.sort(favorites, new Comparator<Show>(){
 		    public int compare(Show s1, Show s2) {
-		        return s1.LastEpisode.compareTo(s2.LastEpisode);
+		        return s1.getLastEp().compareTo(s2.getLastEp());
 		    }
 		});
 		adapter.notifyDataSetChanged();
