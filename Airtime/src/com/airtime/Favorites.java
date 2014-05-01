@@ -58,6 +58,7 @@ public class Favorites extends Activity {
 		for (Show fav : favorites){
 			Show s = updateShow(fav.Id);
 			if (s.equals(new Show())) continue;
+			s.IsAFavorite = true;
 			updatedList.add(s);
 		}
 		favorites = updatedList;

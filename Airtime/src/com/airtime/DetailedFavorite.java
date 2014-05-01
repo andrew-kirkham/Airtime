@@ -36,7 +36,7 @@ public class DetailedFavorite extends Activity {
 		TextView tvShowNetwork = (TextView) findViewById(R.id.TVshowNetwork);
 		tvShowNetwork.setText(s.Network);
 		
-		TextView tvShowlastAired = (TextView) findViewById(R.id.LastAriedText);
+		TextView tvShowlastAired = (TextView) findViewById(R.id.LastAiredText);
 		tvShowlastAired.setText(s.getLastEp());
 		
 		TextView tvShowNextEp = (TextView) findViewById(R.id.NextEpText);
