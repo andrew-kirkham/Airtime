@@ -1,9 +1,13 @@
 package com.airtime;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.Time;
 
 /**
  * A TV show that is currently running
@@ -22,12 +26,52 @@ public class Show implements Parcelable {
 	public String AirDayOfWeek = "";
 	
 	public String NextEpisode = getNextEp();
-	public String LastEpisode = "Unknown";
+	public String LastEpisode = getLastEp();
+	
+	public ArrayList<Episode> Episodes;
+	
+	public Show(){
+		Episodes = new ArrayList<Episode>();
+	}
 	
 	public String getNextEp(){
-		if (AirDate == null) return "Not Scheduled";
-		else if (AirTime == null) return String.format("%s %s", AirDayOfWeek, AirDate);
-		return String.format("%s %s at %s", AirDayOfWeek, AirDate, AirTime); //ex Friday 3/14/2013 at 9:00 PM
+		Episode e = getNextEpisode();
+		if (e.AirYear == 0) return "Not Scheduled";
+		return String.format("%s %s/%s at %s", AirDayOfWeek, e.AirMonth, e.AirDay, AirTime);
+	}
+	
+	private Episode getNextEpisode() {
+		Time today = new Time();
+		today.setToNow();
+		Episode nextEp = new Episode();
+		if (Episodes == null) return new Episode();
+		for (Episode e : Episodes) {
+			if (e.before(today)) continue; //earlier episodes
+			if (nextEp.AirYear == 0) nextEp = e; 
+			if (e.after(nextEp)) continue; //later episodes
+			nextEp = e;
+		}
+		return nextEp;
+	}
+
+	public String getLastEp(){
+		Episode e = getLastEpisode();
+		if (e.AirYear == 0) return "Unknown";
+		return String.format("%s %s/%s at %s", AirDayOfWeek, e.AirMonth, e.AirDay, AirTime);
+	}
+	
+	private Episode getLastEpisode(){
+		Time today = new Time();
+		today.setToNow();
+		Episode lastEp = new Episode();
+		if (Episodes == null) return new Episode();
+		for (Episode e : Episodes) {
+			if (e.after(today)) continue; //later episodes
+			if (lastEp.AirYear == 0) lastEp = e; 
+			if (e.before(lastEp)) continue; //later episodes
+			lastEp = e;
+		}
+		return lastEp;
 	}
 	
 	/**
@@ -115,6 +159,7 @@ public class Show implements Parcelable {
         dest.writeString(AirDate);
         dest.writeString(AirDayOfWeek);
         dest.writeString(AirTime);
+        dest.writeList(Episodes);
 	}
 	
 	public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
@@ -130,6 +175,9 @@ public class Show implements Parcelable {
             s.AirDate = in.readString();
             s.AirDayOfWeek = in.readString();
             s.AirTime = in.readString();
+            ArrayList<Episode> ep = new ArrayList<Episode>();
+            in.readList(ep, Episode.class.getClassLoader());
+            s.Episodes = ep;
             return s;
         }
 
