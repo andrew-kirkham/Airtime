@@ -14,9 +14,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lastAiredlabel"
         android:layout_toRightOf="@+id/lastAiredlabel"
-        android:text="4/13/14 5:00pm"
+        android:text="Sunday 4/27 at 5:00 PM"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/StatusText"
@@ -27,7 +27,7 @@
         android:layout_toRightOf="@+id/StatusLabel"
         android:text="renewed"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/TVshowTitle"
@@ -61,17 +61,6 @@
         android:text="Add to Favorites" />
 
     <TextView
-        android:id="@+id/lastAiredlabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/TVshowNetwork"
-        android:layout_toLeftOf="@+id/NextEpText"
-        android:text="Last Ep: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <TextView
         android:id="@+id/NextEpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,9 +68,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/NextEpLabel"
         android:layout_toRightOf="@+id/NextEpLabel"
-        android:text="4/30/14 5:30pm"
+        android:text="Sunday 5/4 at 5:00 PM"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/NextEpLabel"
@@ -112,5 +101,16 @@
         android:layout_below="@+id/TVshowTitle"
         android:layout_centerHorizontal="true"
         android:src="@drawable/sponge" />
+
+    <TextView
+        android:id="@+id/lastAiredlabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TVshowNetwork"
+        android:layout_marginTop="16dp"
+        android:text="Last Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
 
 </RelativeLayout>

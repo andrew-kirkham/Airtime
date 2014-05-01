@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class DetailedFavorite extends Activity {
 
-	//Show favorite = new Show();
+	Boolean returnToSearch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +62,11 @@ public class DetailedFavorite extends Activity {
 	
 	public void setButton(Button button, Boolean fav, Boolean click, Show s){
 		File f = new File(this);
-		//if(button.getText().equals("Add To Favorites") ){
 		if(fav){
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_red));
         	button.setText("Remove from Favorites");
         	if(click){
+        		returnToSearch = false;
         		Intent intent = new Intent();
         		intent.putExtra("addable", s);
         		setResult(RESULT_OK, intent);
@@ -74,6 +74,7 @@ public class DetailedFavorite extends Activity {
         		onBackPressed();
         		f.storeFavorite(s);
         	}
+        	else {returnToSearch = false;}
 		}
 		else{
 			button.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_green));
@@ -85,13 +86,23 @@ public class DetailedFavorite extends Activity {
         		finish();
         		f.removeLineFromFile(s);
         	}
+        	else {returnToSearch = true;}
 		}	
 	}
 	
 	@Override
 	public void onBackPressed() {
-	    super.onBackPressed(); 
-	    startActivity(new Intent(DetailedFavorite.this, Favorites.class));
+	    super.onBackPressed();
+	    if(returnToSearch){
+	    	Intent intent = new Intent();
+    		setResult(RESULT_OK, intent);
+    		finish();
+
+	    }
+	    else{
+	    	startActivity(new Intent(DetailedFavorite.this, Favorites.class));
+	    }
+	    
 	    finish();
 
 	}
