@@ -1,6 +1,7 @@
 package com.airtime;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.xml.parsers.SAXParser;
@@ -15,18 +16,20 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.util.Log;
 
 
-public class SeriesDetailsHandler extends DefaultHandler {
+public class EpisodeSearchHandler extends DefaultHandler {
 
     private StringBuilder sb;
-    private Show currentSeries;
+    private ArrayList<Episode> episodes = null;
+    private Episode e = null;
+    private int showId;
     
     @Override
     public void startElement(String uri, String name, String qName, Attributes atts) {
     	name = name.trim().toLowerCase(Locale.getDefault());        // format the current element name
       	sb = new StringBuilder();           // Reset the string builder
-
-      	if (name.equals("series")){           // If this is a new node, create a new instance
-      		currentSeries = new Show();
+      	if (name.equals("episode")){           // If this is a new node, create a new instance
+      		e = new Episode();
+      		e.ShowId = showId;
       	}
     }
     
@@ -42,48 +45,37 @@ public class SeriesDetailsHandler extends DefaultHandler {
     public void endElement(String uri, String name, String qName) throws SAXException {
     	try {
     		name = name.trim().toLowerCase(Locale.getDefault());
-    		
+    		if (e == null) return;
     		switch (name){
-	    		case "id":
-	    			currentSeries.Id = Integer.valueOf(sb.toString());
+    			case "episode":
+    				episodes.add(e);
+	    		case "episodename":
+	    			e.Name = sb.toString();
 	    			break;
-	    		case "seriesname":
-	    			currentSeries.Name = sb.toString();
+	    		case "episodenumber":
+	    			e.EpisodeNumber = Integer.valueOf(sb.toString());
 	    			break;
-	    		case "network":
-	    			currentSeries.Network = sb.toString();
+	    		case "seasonnumber":
+	    			e.SeasonNumber = Integer.valueOf(sb.toString());
 	    			break;
-	    		case "status":
-	    			currentSeries.Status = sb.toString();
+	    		case "firstaired":
+	    			e.setAirDate(sb.toString());
 	    			break;
-	    		case "airs_time":
-	    			currentSeries.AirTime = sb.toString();
-	    			break;
-	    		case "airs_dayofweek":
-	    			currentSeries.AirDayOfWeek = sb.toString();
-	    			break;
-	    		case "banner":
-	    		  currentSeries.Banner.setUrl(sb.toString());
-	    		  break;
+    			default:
+    				break;
     		}
-    		currentSeries.LastEpisode = "DO ME";
-      
-//    else if (name.equals("banner")){
-//      currentSeries.getBanner().setUrl(AppSettings.BANNER_URL + sb.toString());
-//    }else if (name.equals("poster")){
-//      currentSeries.getPoster().setUrl(AppSettings.BANNER_URL + sb.toString());
-//    }
-    
 
     	} catch (Exception e) {
         	Log.e("xml.handlers.SeriesHandler", "Error:" + e.toString());
     	}
     }
     
-  public Show getInfo(int seriesId) {
+  public ArrayList<Episode> getInfo(int seriesId) {
       try {
 
-        URL url = new URL("http://thetvdb.com/api/0A41C0DEA5531762/series/" + String.valueOf(seriesId) + "/en.xml");
+        URL url = new URL("http://thetvdb.com/api/0A41C0DEA5531762/series/" + String.valueOf(seriesId) + "/all/en.xml");
+		episodes = new ArrayList<Episode>();
+		this.showId = seriesId;
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser sp = spf.newSAXParser();
@@ -91,7 +83,7 @@ public class SeriesDetailsHandler extends DefaultHandler {
         xr.setContentHandler(this);
         xr.parse(new InputSource(url.openStream()));
 
-        return currentSeries;
+        return episodes;
     } catch (Exception e) {
         Log.e("xml.handlers.SeriesHandler", "Error:" + e.toString());
         return null;

@@ -58,17 +58,6 @@
         android:layout_below="@+id/TVshowTitle"
         android:src="@drawable/sponge" />
 
-    <TextView
-        android:id="@+id/StatusLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/favoritesButton"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="20dp"
-        android:text="Status: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
     <Button
         android:id="@+id/favoritesButton"
         android:layout_width="wrap_content"
@@ -106,10 +95,21 @@
         android:id="@+id/NextEpLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/StatusText"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="37dp"
+        android:layout_below="@+id/lastAiredlabel"
+        android:layout_marginTop="43dp"
         android:text="Next Ep: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/StatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/NextEpLabel"
+        android:layout_marginTop="35dp"
+        android:text="Status: "
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
 

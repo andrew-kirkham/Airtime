@@ -40,11 +40,11 @@ public class Favorites extends Activity {
 		
 		favorites = new ArrayList<Show>();
 		favorites = populateTestFavorites();
-		File f = new File(this);
-		f.clearFavorites();
-		for (Show s : favorites){
-			f.storeFavorite(s);
-		}
+//		File f = new File(this);
+//		f.clearFavorites();
+//		for (Show s : favorites){
+//			f.storeFavorite(s);
+//		}
 		//favorites = f.loadFavorites();
 		addShowsToTable();
 		setAdapter();

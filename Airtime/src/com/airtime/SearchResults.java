@@ -205,7 +205,9 @@ public class SearchResults extends Activity {
     			
     			// 	Lookup basic series info
     			SeriesDetailsHandler infoQuery = new SeriesDetailsHandler();
-    			Show show = infoQuery.getInfo(showId);
+    			Show s = infoQuery.getInfo(showId);
+    			EpisodeSearchHandler episodeQuery = new EpisodeSearchHandler();
+    			s.Episodes = episodeQuery.getInfo(s.Id);
 
             // IMAGE STUFF
             Bitmap bitmap;
@@ -231,7 +233,7 @@ public class SearchResults extends Activity {
 //          }
 //          show.getPoster().setBitmap(bitmap);
 
-    			return show;
+    			return s;
     		}catch (Exception e){
     			Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
     		}
