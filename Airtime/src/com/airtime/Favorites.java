@@ -66,7 +66,7 @@ public class Favorites extends Activity {
 	
 	private Show updateShow(int id){
 		Show result = new Show();
-		DetailsTask task = new DetailsTask();
+		DetailsTask task = new DetailsTask(this);
 		task.execute(String.valueOf(id));
 		try {
 			result = task.get(10, TimeUnit.SECONDS);

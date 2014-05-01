@@ -1,9 +1,18 @@
 package com.airtime;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class DetailsTask extends AsyncTask<String, Void, Show> {
+	
+	private Context ctx;
+    private long cacheSize = 10;
+    
+    public DetailsTask(Context context) {
+        ctx = context;
+    }
     
 	@Override
   	protected Show doInBackground(String... query) {
@@ -16,29 +25,18 @@ public class DetailsTask extends AsyncTask<String, Void, Show> {
 			EpisodeSearchHandler episodeQuery = new EpisodeSearchHandler();
 			s.Episodes = episodeQuery.getInfo(s.Id);
 
-        /// IMAGE STUFF
-//        Bitmap bitmap;
-//        BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
-//
-//        if (fileCache.contains(seriesInfo.getBanner().getId())){
-//          bitmap = fileCache.get(seriesInfo.getBanner().getId());
-//        }else{
-//          BitmapWebUtil web = new BitmapWebUtil(ctx);
-//          bitmap = web.downloadBitmap(seriesInfo.getBanner().getUrl());
-//        fileCache.put(seriesInfo.getBanner().getId(), bitmap);
-//      }
-//      seriesInfo.getBanner().setBitmap(bitmap);
-
-//      //There is no need to load the poster at this time.     
-//      
-//      if (fileCache.contains(seriesInfo.getPoster().getId())){
-//          bitmap = fileCache.get(seriesInfo.getPoster().getId());
-//        }else{
-//          BitmapWebUtil web = new BitmapWebUtil(ctx);
-//          bitmap = web.downloadBitmap(seriesInfo.getPoster().getUrl());
-//        fileCache.put(seriesInfo.getPoster().getId(), bitmap);
-//      }
-//      seriesInfo.getPoster().setBitmap(bitmap);
+			Bitmap bitmap;
+            BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
+  
+            if (fileCache.contains(s.Banner.getId())){
+              bitmap = fileCache.get(s.Banner.getId());
+            }else{
+              BitmapWebUtil web = new BitmapWebUtil(ctx);
+              bitmap = web.downloadBitmap(s.Banner.getUrl());
+            fileCache.put(s.Banner.getId(), bitmap);
+            }
+            
+            s.Banner.setBitmap(bitmap);
 
 			return s;
 		}catch (Exception e){

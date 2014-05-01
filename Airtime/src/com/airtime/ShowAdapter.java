@@ -56,7 +56,7 @@ public class ShowAdapter extends BaseAdapter {
         title.setText(s.Name);
         airtime.setText(String.format("%s on %s", s.AirTime, s.Network));
         
-        Bitmap image = File.loadImage(s);
+        Bitmap image = s.Banner.bitmap;
         ImageView myImage = (ImageView) vi.findViewById(R.id.list_image);
         if (image != null) myImage.setImageBitmap(image);
         

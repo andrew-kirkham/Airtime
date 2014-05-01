@@ -46,6 +46,7 @@ public class SeriesDetailsHandler extends DefaultHandler {
     		switch (name){
 	    		case "id":
 	    			currentSeries.Id = Integer.valueOf(sb.toString());
+	    			currentSeries.Banner.setId(sb.toString());
 	    			break;
 	    		case "seriesname":
 	    			currentSeries.Name = sb.toString();
@@ -62,6 +63,9 @@ public class SeriesDetailsHandler extends DefaultHandler {
 	    		case "airs_dayofweek":
 	    			currentSeries.AirDayOfWeek = sb.toString();
 	    			break;
+	    		case "banner":
+	    		  currentSeries.Banner.setUrl(sb.toString());
+	    		  break;
     		}
       
 //    else if (name.equals("banner")){

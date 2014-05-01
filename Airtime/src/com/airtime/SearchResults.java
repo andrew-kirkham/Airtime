@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -134,7 +136,7 @@ public class SearchResults extends Activity {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				Show show = (Show) adapter.getItem(position);
-				DetailsTask task = new DetailsTask();
+				DetailsTask task = new DetailsTask(getApplicationContext());
 				task.execute(String.valueOf(show.Id));
 				try {
 					Show result = task.get(10, TimeUnit.SECONDS);
