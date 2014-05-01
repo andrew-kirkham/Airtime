@@ -50,14 +50,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dp" />
 
-    <ImageView
-        android:id="@+id/tvShowIcon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignLeft="@+id/StatusText"
-        android:layout_below="@+id/TVshowTitle"
-        android:src="@drawable/sponge" />
-
     <Button
         android:id="@+id/favoritesButton"
         android:layout_width="wrap_content"
@@ -112,5 +104,13 @@
         android:text="Status: "
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25dp" />
+
+    <ImageView
+        android:id="@+id/tvShowIcon"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/TVshowTitle"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/sponge" />
 
 </RelativeLayout>

@@ -105,8 +105,9 @@ public class BitmapFileCache {
   public void put(String key, Bitmap item) throws IOException {
     if (item != null){
       File cachedFile = new File(cacheDir, key);
-        if (!cachedFile.exists())
+        if (!cachedFile.exists()) {
           cachedFile.createNewFile();
+        }
         OutputStream oStream = new FileOutputStream(cachedFile);
       item.compress(Bitmap.CompressFormat.JPEG, 90, oStream);
       oStream.close();

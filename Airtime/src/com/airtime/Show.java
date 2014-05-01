@@ -32,6 +32,7 @@ public class Show implements Parcelable {
 	
 	public Show(){
 		Episodes = new ArrayList<Episode>();
+		Banner = new WebImage();
 	}
 	
 	public String getNextEp(){
@@ -152,6 +153,7 @@ public class Show implements Parcelable {
         dest.writeString(AirDayOfWeek);
         dest.writeString(AirTime);
         dest.writeList(Episodes);
+        dest.writeParcelable(Banner, 0);
 	}
 	
 	public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
@@ -170,6 +172,7 @@ public class Show implements Parcelable {
             ArrayList<Episode> ep = new ArrayList<Episode>();
             in.readList(ep, Episode.class.getClassLoader());
             s.Episodes = ep;
+            s.Banner = in.readParcelable(WebImage.class.getClassLoader());
             return s;
         }
 

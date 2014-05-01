@@ -192,7 +192,7 @@ public class SearchResults extends Activity {
     
     private class DetailsTask extends AsyncTask<String, Void, Show> {
         private Context ctx;
-        private long cacheSize = 1;
+        private long cacheSize = 10;
         
         public DetailsTask(Context context) {
             ctx = context;
@@ -213,14 +213,15 @@ public class SearchResults extends Activity {
             Bitmap bitmap;
             BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
   
-            if (fileCache.contains(show.Banner.getId())){
-              bitmap = fileCache.get(show.Banner.getId());
+            if (fileCache.contains(s.Banner.getId())){
+              bitmap = fileCache.get(s.Banner.getId());
             }else{
               BitmapWebUtil web = new BitmapWebUtil(ctx);
-              bitmap = web.downloadBitmap(show.Banner.getUrl());
-            fileCache.put(show.Banner.getId(), bitmap);
-          }
-          show.Banner.setBitmap(bitmap);
+              bitmap = web.downloadBitmap(s.Banner.getUrl());
+            fileCache.put(s.Banner.getId(), bitmap);
+            }
+            
+            s.Banner.setBitmap(bitmap);
 
 //          //There is no need to load the poster at this time.     
 //          
@@ -234,6 +235,7 @@ public class SearchResults extends Activity {
 //          show.getPoster().setBitmap(bitmap);
 
     			return s;
+    			
     		}catch (Exception e){
     			Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
     		}

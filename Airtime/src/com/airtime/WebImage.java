@@ -1,7 +1,11 @@
 package com.airtime;
-import android.graphics.Bitmap;
+import java.util.ArrayList;
 
-public class WebImage {
+import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class WebImage implements Parcelable {
 
   private String id;
   private String url;
@@ -19,7 +23,7 @@ public class WebImage {
     return url;
   }
   public void setUrl(String url) {
-    this.url = url;
+    this.url = "http://thetvdb.com/banners/" + url; // For banners: "http://thetvdb.com/banners/"
   }
   public String getThumbUrl() {
     if (HasThumb())
@@ -52,6 +56,31 @@ public class WebImage {
     else
       return true;
   }
+  @Override public int describeContents() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+  @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeString(id);
+      dest.writeString(url);
+      dest.writeString(thumbUrl);
+      dest.writeParcelable(bitmap, 0);
+  }
+  
+  public static final Parcelable.Creator<WebImage> CREATOR = new Parcelable.Creator<WebImage>() {
+    public WebImage createFromParcel(Parcel in) {
+      WebImage banner = new WebImage();
+        banner.id = in.readString();
+        banner.url = in.readString();
+        banner.thumbUrl = in.readString();
+        banner.bitmap = in.readParcelable(Bitmap.class.getClassLoader());
 
+        return banner;
+    }
+
+    public WebImage[] newArray(int size) {
+        return new WebImage[size];
+    }
+  };
 
 }

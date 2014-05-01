@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -32,6 +33,9 @@ public class DetailedFavorite extends Activity {
 		
 		TextView tvShowName = (TextView) findViewById(R.id.TVshowTitle);
 		tvShowName.setText(s.Name);
+		
+		ImageView ban = (ImageView) findViewById(R.id.tvShowIcon);
+		ban.setImageBitmap(s.Banner.bitmap);
 		
 		TextView tvShowNetwork = (TextView) findViewById(R.id.TVshowNetwork);
 		tvShowNetwork.setText(s.Network);

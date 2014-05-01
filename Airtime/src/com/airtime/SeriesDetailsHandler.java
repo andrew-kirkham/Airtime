@@ -46,6 +46,7 @@ public class SeriesDetailsHandler extends DefaultHandler {
     		switch (name){
 	    		case "id":
 	    			currentSeries.Id = Integer.valueOf(sb.toString());
+	    			currentSeries.Banner.setId(sb.toString());
 	    			break;
 	    		case "seriesname":
 	    			currentSeries.Name = sb.toString();
