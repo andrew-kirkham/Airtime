@@ -43,7 +43,7 @@ public class Show implements Parcelable {
 	/**
 	 * Image url for selected show
 	 */
-	public String ImageUrl;
+	public WebImage Banner;
 	
 	/**
 	 * The unique id of the TV show. Used by feed and to find images.
@@ -54,15 +54,7 @@ public class Show implements Parcelable {
 	 * Whether this show is a stored favorite
 	 */
 	public Boolean IsAFavorite = false;
-  
-//  public WebImage getBanner() {
-//    if (banner == null)
-//      banner = new WebImage();
-//    return banner;
-//  }
-//  public void setBanner(WebImage banner) {
-//    this.banner = banner;
-//  }
+
 	
 	@Override
 	public boolean equals(Object obj){

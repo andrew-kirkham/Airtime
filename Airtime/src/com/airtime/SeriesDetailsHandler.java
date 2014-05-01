@@ -66,6 +66,9 @@ public class SeriesDetailsHandler extends DefaultHandler {
 	    		case "airs_dayofweek":
 	    			currentSeries.AirDayOfWeek = sb.toString();
 	    			break;
+	    		case "banner":
+	    		  currentSeries.Banner.setUrl(sb.toString());
+	    		  break;
     		}
     		currentSeries.LastEpisode = "DO ME";
       

@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -134,7 +136,7 @@ public class SearchResults extends Activity {
 			@Override 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				Show show = (Show) adapter.getItem(position);
-				DetailsTask task = new DetailsTask();
+				DetailsTask task = new DetailsTask(getApplicationContext());
 				task.execute(String.valueOf(show.Id));
 				try {
 					Show result = task.get(10, TimeUnit.SECONDS);
@@ -189,7 +191,13 @@ public class SearchResults extends Activity {
 	}
     
     private class DetailsTask extends AsyncTask<String, Void, Show> {
-            
+        private Context ctx;
+        private long cacheSize = 1;
+        
+        public DetailsTask(Context context) {
+            ctx = context;
+        }
+        
     	@Override
       	protected Show doInBackground(String... query) {
     		try {
@@ -197,33 +205,33 @@ public class SearchResults extends Activity {
     			
     			// 	Lookup basic series info
     			SeriesDetailsHandler infoQuery = new SeriesDetailsHandler();
-    			Show seriesInfo = infoQuery.getInfo(showId);
+    			Show show = infoQuery.getInfo(showId);
 
-            /// IMAGE STUFF
-//            Bitmap bitmap;
-//            BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
-  //
-//            if (fileCache.contains(seriesInfo.getBanner().getId())){
-//              bitmap = fileCache.get(seriesInfo.getBanner().getId());
-//            }else{
-//              BitmapWebUtil web = new BitmapWebUtil(ctx);
-//              bitmap = web.downloadBitmap(seriesInfo.getBanner().getUrl());
-//            fileCache.put(seriesInfo.getBanner().getId(), bitmap);
-//          }
-//          seriesInfo.getBanner().setBitmap(bitmap);
+            // IMAGE STUFF
+            Bitmap bitmap;
+            BitmapFileCache fileCache = new BitmapFileCache(ctx, cacheSize);
+  
+            if (fileCache.contains(show.Banner.getId())){
+              bitmap = fileCache.get(show.Banner.getId());
+            }else{
+              BitmapWebUtil web = new BitmapWebUtil(ctx);
+              bitmap = web.downloadBitmap(show.Banner.getUrl());
+            fileCache.put(show.Banner.getId(), bitmap);
+          }
+          show.Banner.setBitmap(bitmap);
 
 //          //There is no need to load the poster at this time.     
 //          
-//          if (fileCache.contains(seriesInfo.getPoster().getId())){
-//              bitmap = fileCache.get(seriesInfo.getPoster().getId());
+//          if (fileCache.contains(show.getPoster().getId())){
+//              bitmap = fileCache.get(show.getPoster().getId());
 //            }else{
 //              BitmapWebUtil web = new BitmapWebUtil(ctx);
-//              bitmap = web.downloadBitmap(seriesInfo.getPoster().getUrl());
-//            fileCache.put(seriesInfo.getPoster().getId(), bitmap);
+//              bitmap = web.downloadBitmap(show.getPoster().getUrl());
+//            fileCache.put(show.getPoster().getId(), bitmap);
 //          }
-//          seriesInfo.getPoster().setBitmap(bitmap);
+//          show.getPoster().setBitmap(bitmap);
 
-    			return seriesInfo;
+    			return show;
     		}catch (Exception e){
     			Log.e("LoadSeriesDataTask", "doInBackground:" + e.getMessage());
     		}
