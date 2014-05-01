@@ -43,7 +43,7 @@ public class Show implements Parcelable {
 				AirDayOfWeek, NextEp.AirMonth, NextEp.AirDay, NextEp.AirYear, AirTime);
 	}
 	
-	private Episode getNextEpisode() {
+	public Episode getNextEpisode() {
 		Time today = new Time();
 		today.setToNow();
 		Episode nextEp = new Episode();
@@ -64,7 +64,7 @@ public class Show implements Parcelable {
 				AirDayOfWeek, LastEp.AirMonth, LastEp.AirDay, LastEp.AirYear, AirTime);
 	}
 	
-	private Episode getLastEpisode(){
+	public Episode getLastEpisode(){
 		Time today = new Time();
 		today.setToNow();
 		Episode lastEp = new Episode();

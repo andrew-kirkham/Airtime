@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -219,7 +220,7 @@ public class Favorites extends Activity {
 	public void sortByNextAirtime(){
 		Collections.sort(favorites, new Comparator<Show>(){
 		    public int compare(Show s1, Show s2) {
-		        return s1.getNextEp().compareTo(s2.getNextEp());
+		        return s1.getNextEpisode().compareTo(s2.getNextEpisode());
 		    }
 		});
 		adapter.notifyDataSetChanged();
@@ -231,7 +232,7 @@ public class Favorites extends Activity {
 	public void sortByLastAirtime(){
 		Collections.sort(favorites, new Comparator<Show>(){
 		    public int compare(Show s1, Show s2) {
-		        return s1.getLastEp().compareTo(s2.getLastEp());
+		        return s1.getLastEpisode().compareTo(s2.getLastEpisode());
 		    }
 		});
 		adapter.notifyDataSetChanged();

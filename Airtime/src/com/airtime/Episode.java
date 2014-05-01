@@ -46,6 +46,12 @@ public class Episode implements Parcelable {
 		return true;
 	}
 	
+	public int compareTo(Episode e){
+		if (this.before(e)) return -1;
+		if (this.after(e)) return 1;
+		return 0;
+	}
+	
 	public boolean after(Time t){
 		if (AirYear > t.year) return true;
 		if (AirYear == t.year){
